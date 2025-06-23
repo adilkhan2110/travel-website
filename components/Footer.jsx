@@ -158,9 +158,9 @@ export default function Footer() {
                   </svg>
                 </div>
                 <div>
-                  <p>123 Travel Street</p>
-                  <p>Tourism District</p>
-                  <p>City, State 12345</p>
+                  76, HALDIYON KA RASTA, JOHARI BAZAR, Jaipur, Jaipur,
+                  <br />
+                  Rajasthan, 302003
                 </div>
               </div>
 

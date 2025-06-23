@@ -5,14 +5,14 @@ export default function GlobalVisaService() {
   const [currentIndex, setCurrentIndex] = useState(0)
 
   const visaServices = [
-    { country: "CHINA VISA", image: "/placeholder.svg?height=150&width=200" },
-    { country: "DUBAI VISA", image: "/placeholder.svg?height=150&width=200" },
-    { country: "SCHENGEN VISA", image: "/placeholder.svg?height=150&width=200" },
-    { country: "UK VISA", image: "/placeholder.svg?height=150&width=200" },
-    { country: "US VISA", image: "/placeholder.svg?height=150&width=200" },
-    { country: "TURKEY VISA", image: "/placeholder.svg?height=150&width=200" },
-    { country: "SINGAPORE VISA", image: "/placeholder.svg?height=150&width=200" },
-    { country: "CHINA VISA", image: "/placeholder.svg?height=150&width=200" },
+    { country: "CHINA VISA", image: "/images/dubai.jpg" },
+    { country: "DUBAI VISA", image: "/images/dubai.jpg" },
+    { country: "SCHENGEN VISA", image: "/images/dubai.jpg" },
+    { country: "UK VISA", image: "/images/dubai.jpg" },
+    { country: "US VISA", image: "/images/dubai.jpg" },
+    { country: "TURKEY VISA", image: "/images/dubai.jpg" },
+    { country: "SINGAPORE VISA", image: "/images/dubai.jpg" },
+    { country: "CHINA VISA", image: "/images/dubai.jpg" },
   ]
 
   const nextSlide = () => {

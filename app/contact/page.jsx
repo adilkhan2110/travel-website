@@ -198,9 +198,9 @@ export default function ContactPage() {
                   <div>
                     <h3 className="font-semibold text-gray-800">Address</h3>
                     <p className="text-gray-600">
-                      123 Travel Street, Tourism District
+                      76, HALDIYON KA RASTA, JOHARI BAZAR, Jaipur,
                       <br />
-                      City, State 12345
+                      Rajasthan, 302003
                     </p>
                   </div>
                 </div>
