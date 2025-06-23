@@ -1,8 +1,9 @@
 "use client"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 export default function GlobalVisaService() {
   const [currentIndex, setCurrentIndex] = useState(0)
+  const [itemsPerPage, setItemsPerPage] = useState(7)
 
   const visaServices = [
     { country: "CHINA VISA", image: "/images/dubai.jpg" },
@@ -15,12 +16,28 @@ export default function GlobalVisaService() {
     { country: "CHINA VISA", image: "/images/dubai.jpg" },
   ]
 
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 640) {
+        setItemsPerPage(2)
+      } else {
+        setItemsPerPage(7)
+      }
+    }
+
+    handleResize()
+    window.addEventListener("resize", handleResize)
+    return () => window.removeEventListener("resize", handleResize)
+  }, [])
+
+  const maxIndex = visaServices.length - itemsPerPage
+
   const nextSlide = () => {
-    setCurrentIndex((prev) => (prev + 1) % (visaServices.length - 6))
+    setCurrentIndex((prev) => (prev + 1 > maxIndex ? 0 : prev + 1))
   }
 
   const prevSlide = () => {
-    setCurrentIndex((prev) => (prev - 1 + (visaServices.length - 6)) % (visaServices.length - 6))
+    setCurrentIndex((prev) => (prev - 1 < 0 ? maxIndex : prev - 1))
   }
 
   return (
@@ -41,13 +58,17 @@ export default function GlobalVisaService() {
               </svg>
             </button>
 
-            <div className="overflow-hidden mx-12">
+            <div className="overflow-hidden mx-12 w-full">
               <div
                 className="flex transition-transform duration-300"
-                style={{ transform: `translateX(-${currentIndex * (100 / 7)}%)` }}
+                style={{ width: `${(visaServices.length / itemsPerPage) * 100}%`, transform: `translateX(-${(100 / visaServices.length) * currentIndex}%)` }}
               >
                 {visaServices.map((visa, index) => (
-                  <div key={index} className="flex-shrink-0 w-1/7 px-2">
+                  <div
+                    key={index}
+                    className="flex-shrink-0 px-2"
+                    style={{ width: `${100 / visaServices.length}%` }}
+                  >
                     <div className="text-center">
                       <img
                         src={visa.image || "/placeholder.svg"}
