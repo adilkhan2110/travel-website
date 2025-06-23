@@ -158,8 +158,8 @@ export default function Footer() {
                   </svg>
                 </div>
                 <div>
-                  76, HALDIYON KA RASTA, JOHARI BAZAR, Jaipur, Jaipur,
-                    <br />
+                  76, HALDIYON KA RASTA, JOHARI BAZAR, Jaipur,
+                  <br />
                   Rajasthan, 302003
                 </div>
               </div>
