@@ -159,7 +159,7 @@ export default function Footer() {
                 </div>
                 <div>
                   76, HALDIYON KA RASTA, JOHARI BAZAR, Jaipur, Jaipur,
-                  <br />
+                    <br />
                   Rajasthan, 302003
                 </div>
               </div>
