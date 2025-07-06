@@ -13,7 +13,15 @@ html {
 }
 
 body {
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell",
+  font-family:
+    "Inter",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    "Roboto",
+    "Oxygen",
+    "Ubuntu",
+    "Cantarell",
     sans-serif;
   line-height: 1.6;
 }
@@ -134,11 +142,15 @@ img {
 
 /* Custom shadows */
 .shadow-emerald {
-  box-shadow: 0 10px 25px -3px rgba(16, 185, 129, 0.1), 0 4px 6px -2px rgba(16, 185, 129, 0.05);
+  box-shadow:
+    0 10px 25px -3px rgba(16, 185, 129, 0.1),
+    0 4px 6px -2px rgba(16, 185, 129, 0.05);
 }
 
 .shadow-orange {
-  box-shadow: 0 10px 25px -3px rgba(249, 115, 22, 0.1), 0 4px 6px -2px rgba(249, 115, 22, 0.05);
+  box-shadow:
+    0 10px 25px -3px rgba(249, 115, 22, 0.1),
+    0 4px 6px -2px rgba(249, 115, 22, 0.05);
 }
 
 /* Responsive adjustments */
@@ -186,4 +198,11 @@ img {
   100% {
     background-position: 200% 0;
   }
+}
+
+.image-upload-container label {
+  width: 100%;
+  text-align: left !important;
+  padding: 11px;
+  border: 1px solid #c4c4c4 !important;
 }
