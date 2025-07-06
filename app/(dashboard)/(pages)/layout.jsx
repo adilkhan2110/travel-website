@@ -1,4 +1,5 @@
 import SideNav from "../../../components/admin/master/sidenav"; // Correct path based on file structure
+import AdminHeader from "../../../components/admin/master/header"; // Correct path based on file structure
 
 export const metadata = {
   title: "2 Your Gateway to Amazing Destinations",
@@ -14,7 +15,8 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className="antialiased">
         <SideNav />
-        <main className="ml-64 p-6">{children}</main>
+        <AdminHeader />
+        <main className="ml-0 md:ml-64 p-6">{children}</main>
       </body>
     </html>
   );

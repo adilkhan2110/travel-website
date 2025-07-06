@@ -12,6 +12,7 @@ import {
   TablePagination,
   Box,
   IconButton,
+  Skeleton,
 } from "@mui/material";
 import { useState } from "react";
 
@@ -25,6 +26,7 @@ export default function ReusableTable({
   onPageChange,
   onRowsPerPageChange,
   rowsPerPageOptions = [5, 10, 25],
+  loading = false,
 }) {
   console.log(`rows`, rows);
 
@@ -42,20 +44,33 @@ export default function ReusableTable({
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows?.map((row) => (
-              <TableRow key={row?._id}>
-                {columns?.map((col) => (
-                  <TableCell key={col.id}>
-                    {col.renderCell
-                      ? col.renderCell(row)
-                      : col.hasActions
-                      ? renderActions?.(row)
-                      : row?.[col.id] ?? "--"}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))}
-          </TableBody>
+  {loading ? (
+    Array.from({ length: rowsPerPage }).map((_, i) => (
+      <TableRow key={i}>
+        {columns.map((col) => (
+          <TableCell key={col.id}>
+            <Skeleton variant="text" width="100%" />
+          </TableCell>
+        ))}
+      </TableRow>
+    ))
+  ) : (
+    rows?.map((row) => (
+      <TableRow key={row?._id}>
+        {columns?.map((col) => (
+          <TableCell key={col.id}>
+            {col.renderCell
+              ? col.renderCell(row)
+              : col.hasActions
+              ? renderActions?.(row)
+              : row?.[col.id] ?? "--"}
+          </TableCell>
+        ))}
+      </TableRow>
+    ))
+  )}
+</TableBody>
+
         </Table>
       </TableContainer>
       <TablePagination

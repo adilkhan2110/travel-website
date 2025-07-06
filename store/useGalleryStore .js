@@ -6,10 +6,17 @@ const useGalleryStore = create((set, get) => ({
   page: 0,
   rowsPerPage: 10,
 
+  // Loading keys
+  isFetchingItems: false,
+  isAddingItem: false,
+  isUpdatingItem: false,
+  isDeletingItem: false,
+
   setPage: (page) => set({ page }),
   setRowsPerPage: (rowsPerPage) => set({ rowsPerPage }),
 
   fetchItems: async (page, rowsPerPage) => {
+    set({ isFetchingItems: true });
     try {
       const response = await fetch(
         `/api/gallery?page=${page}&limit=${rowsPerPage}`
@@ -21,10 +28,13 @@ const useGalleryStore = create((set, get) => ({
       });
     } catch (error) {
       console.error("Error fetching items:", error);
+    } finally {
+      set({ isFetchingItems: false });
     }
   },
 
   addItem: async (formData) => {
+    set({ isAddingItem: true });
     try {
       const response = await fetch("/api/gallery", {
         method: "POST",
@@ -44,10 +54,13 @@ const useGalleryStore = create((set, get) => ({
       });
     } catch (error) {
       console.error("Add item error:", error);
+    } finally {
+      set({ isAddingItem: false });
     }
   },
 
   updateItem: async (id, formData) => {
+    set({ isUpdatingItem: true });
     try {
       const response = await fetch(`/api/gallery/${id}`, {
         method: "PUT",
@@ -55,14 +68,16 @@ const useGalleryStore = create((set, get) => ({
       });
       if (!response.ok) throw new Error("Failed to update item");
 
-      // Don't update items manually
       await get().fetchItems(get().page, get().rowsPerPage);
     } catch (error) {
       console.error("Update item error:", error);
+    } finally {
+      set({ isUpdatingItem: false });
     }
   },
 
   deleteItem: async (id) => {
+    set({ isDeletingItem: true });
     try {
       const response = await fetch(`/api/gallery/${id}`, {
         method: "DELETE",
@@ -75,6 +90,8 @@ const useGalleryStore = create((set, get) => ({
       }));
     } catch (error) {
       console.error("Delete item error:", error);
+    } finally {
+      set({ isDeletingItem: false });
     }
   },
 }));

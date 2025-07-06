@@ -1,11 +1,13 @@
 // app/dashboard/gallery/page.jsx
 "use client";
-
-import { Button, Modal } from "@mui/material";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { Button, Card, Modal } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import Popover from "@mui/material/Popover";
 import { useEffect, useState } from "react";
-import useGalleryStore from "../../../../store/useGalleryStore ";
 import AddEditModal from "../../../../components/gallary/addEditmodal";
 import ReusableTable from "../../../../components/ReusableTable/ReusableTable";
+import useGalleryStore from "../../../../store/useGalleryStore ";
 
 export default function GalleryPage() {
   const {
@@ -19,6 +21,8 @@ export default function GalleryPage() {
     deleteItem,
     addItem,
     updateItem,
+    isFetchingItems,
+    isAddingItem,
   } = useGalleryStore();
 
   const [open, setOpen] = useState(false);
@@ -97,40 +101,80 @@ export default function GalleryPage() {
         </Button>
       </div>
 
-      <ReusableTable
-        columns={columns}
-        rows={items}
-        totalCount={totalCount}
-        page={page}
-        rowsPerPage={rowsPerPage}
-        onPageChange={(e, newPage) => setPage(newPage)}
-        onRowsPerPageChange={(e) => {
-          setRowsPerPage(parseInt(e.target.value, 10));
-          setPage(0);
+      <Card className="p-4 mb-4">
+        <ReusableTable
+          columns={columns}
+          rows={items}
+          totalCount={totalCount}
+          page={page}
+          rowsPerPage={rowsPerPage}
+          onPageChange={(e, newPage) => setPage(newPage)}
+          onRowsPerPageChange={(e) => {
+            setRowsPerPage(parseInt(e.target.value, 10));
+            setPage(0);
+          }}
+          loading={isFetchingItems}
+          renderActions={(row) => {
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClosePopover = () => {
+    setAnchorEl(null);
+  };
+
+  const openPopover = Boolean(anchorEl);
+  const id = openPopover ? `popover-${row._id}` : undefined;
+
+  return (
+    <div>
+      <IconButton aria-describedby={id} onClick={handleClick}>
+        <MoreVertIcon />
+      </IconButton>
+      <Popover
+        id={id}
+        open={openPopover}
+        anchorEl={anchorEl}
+        onClose={handleClosePopover}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "left",
         }}
-        renderActions={(row) => (
-          <>
-            <Button color="error" onClick={() => deleteItem(row._id)}>
-              Delete
-            </Button>
-            <Button
-              color="primary"
-              onClick={() => {
-                setSelectedItem(row);
-                setFormData({
-                  title: row.title || "",
-                  category: row.category || "",
-                  image: row.image || "",
-                  _id: row._id,
-                });
-                setOpen(true);
-              }}
-            >
-              Edit
-            </Button>
-          </>
-        )}
-      />
+      >
+        <div className="p-2 flex flex-col">
+          <Button
+            color="error"
+            onClick={() => {
+              deleteItem(row._id);
+              handleClosePopover();
+            }}
+          >
+            Delete
+          </Button>
+          <Button
+            onClick={() => {
+              setSelectedItem(row);
+              setFormData({
+                title: row.title || "",
+                category: row.category || "",
+                image: row.image || "",
+                _id: row._id,
+              });
+              setOpen(true);
+              handleClosePopover();
+            }}
+          >
+            Edit
+          </Button>
+        </div>
+      </Popover>
+    </div>
+  );
+}}
+        />
+      </Card>
 
       <Modal open={open} onClose={handleClose}>
         <div

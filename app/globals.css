@@ -210,3 +210,9 @@ img {
 .image-upload-container h6 {
   font-size: 13px;
 }
+
+th {
+  background: #111827;
+  padding: 19px !important;
+  color: #fff !important;
+}
