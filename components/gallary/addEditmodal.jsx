@@ -38,28 +38,30 @@ const AddEditModal = ({ formData, handleClose, isEdit }) => {
   const {
     handleSubmit,
     reset,
-    formState: { isSubmitting },
+    // formState: { isSubmitting },
   } = methods;
 
   const options = [
-    { value: "mountain", label: "Mountain" },
-    { value: "city", label: "City" },
-    { value: "lake", label: "Lake" },
-    { value: "river", label: "River" },
-    { value: "forest", label: "Forest" },
-    { value: "desert", label: "Desert" },
-    { value: "beach", label: "Beach" },
-    { value: "valley", label: "Valley" },
-    { value: "other", label: "Other" },
+    { value: "Mountain", label: "Mountain" },
+    { value: "City", label: "City" },
+    { value: "Lake", label: "Lake" },
+    { value: "River", label: "River" },
+    { value: "Forest", label: "Forest" },
+    { value: "Desert", label: "Desert" },
+    { value: "Beach", label: "Beach" },
+    { value: "Valley", label: "Valley" },
+    { value: "Other", label: "Other" },
   ];
 
   // Populate form when editing
   useEffect(() => {
     if (isEdit && formData) {
       reset({
-        title: formData.title || "",
-        category: formData.category || "",
-        image: [`http://localhost:3000${formData.image}`],
+        title: formData?.title || "",
+        category: formData?.category || "",
+        image: formData?.image
+          ? [`http://localhost:3000${formData.image}`]
+          : [],
       });
     }
   }, [isEdit, formData, reset]);
@@ -71,7 +73,9 @@ const AddEditModal = ({ formData, handleClose, isEdit }) => {
       formDataToSend.append("category", data.category);
 
       for (let i = 0; i < data.image.length; i++) {
-        formDataToSend.append("image", data.image[i]);
+        if (data.image[i] instanceof File) {
+          formDataToSend.append("image", data.image[i]);
+        }
       }
 
       if (isEdit) {
@@ -105,7 +109,7 @@ const AddEditModal = ({ formData, handleClose, isEdit }) => {
             </RHFSelect>
           </Box>
           <Box sx={{ mb: 2 }}>
-            <RHFImageUpload name="image" label="Image" />
+            <RHFImageUpload name="image" label="Gallry Image" />
           </Box>
 
           <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
@@ -117,7 +121,11 @@ const AddEditModal = ({ formData, handleClose, isEdit }) => {
             >
               {isEdit ? "Update" : "Add"}
             </Button>
-            <Button variant="outlined" sx={{ mt: 2 }} onClick={handleClose}>
+            <Button
+              variant="outlined"
+              sx={{ mt: 2, ml: 2 }}
+              onClick={handleClose}
+            >
               Cancel
             </Button>
           </Box>

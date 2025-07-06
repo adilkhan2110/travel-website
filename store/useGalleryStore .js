@@ -1,4 +1,3 @@
-// store/useGalleryStore.js
 import { create } from "zustand";
 
 const useGalleryStore = create((set, get) => ({
@@ -12,7 +11,9 @@ const useGalleryStore = create((set, get) => ({
 
   fetchItems: async (page, rowsPerPage) => {
     try {
-      const response = await fetch(`/api/gallery?page=${page}&limit=${rowsPerPage}`);
+      const response = await fetch(
+        `/api/gallery?page=${page}&limit=${rowsPerPage}`
+      );
       const data = await response.json();
       set({
         items: data.data,
@@ -36,6 +37,11 @@ const useGalleryStore = create((set, get) => ({
         items: [...state.items, result.data],
         totalCount: state.totalCount + 1,
       }));
+
+      toast({
+        title: "Success!",
+        description: "Your form was submitted successfully.",
+      });
     } catch (error) {
       console.error("Add item error:", error);
     }
@@ -49,10 +55,8 @@ const useGalleryStore = create((set, get) => ({
       });
       if (!response.ok) throw new Error("Failed to update item");
 
-      const result = await response.json();
-      set((state) => ({
-        items: state.items.map((item) => (item._id === id ? result.data : item)),
-      }));
+      // Don't update items manually
+      await get().fetchItems(get().page, get().rowsPerPage);
     } catch (error) {
       console.error("Update item error:", error);
     }

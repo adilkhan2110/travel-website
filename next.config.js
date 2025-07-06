@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export', // ✅ Yeh line add karo
+  output: 'standalone', // ⬅️ This allows dynamic API routes like /api/gallery/[id]
 
   eslint: {
     ignoreDuringBuilds: true,
@@ -10,7 +10,7 @@ const nextConfig = {
   },
   images: {
     domains: ["placeholder.svg"],
-    unoptimized: true, // ✅ Required for static export
+    unoptimized: true, // Optional (only needed if you still want to avoid optimization)
   },
   experimental: {
     optimizeCss: true,

@@ -25,6 +25,7 @@ export default function GalleryPage() {
   const [formData, setFormData] = useState({
     title: "",
     category: "",
+    _id: null,
     image: null,
   });
   const [selectedItem, setSelectedItem] = useState(null);
@@ -33,14 +34,31 @@ export default function GalleryPage() {
     fetchItems(page, rowsPerPage);
   }, [page, rowsPerPage]);
 
+  const columns = [
+    {
+      id: "image",
+      label: "Image",
+      renderCell: (row) => (
+        <img
+          src={row?.image}
+          alt={row?.title}
+          style={{ width: 50, borderRadius: 6 }}
+        />
+      ),
+    },
+    { id: "title", label: "Title" },
+    { id: "category", label: "Category" },
+    { id: "actions", label: "Actions", hasActions: true },
+  ];
+
   const handleOpen = () => {
-    setFormData({ title: "", category: "", image: null });
+    setFormData({ title: "", category: "", image: null, _id: null });
     setSelectedItem(null);
     setOpen(true);
   };
 
   const handleClose = () => {
-    setFormData({ title: "", category: "", image: null });
+    setFormData({ title: "", category: "", image: null, _id: null });
     setSelectedItem(null);
     setOpen(false);
   };
@@ -80,30 +98,16 @@ export default function GalleryPage() {
       </div>
 
       <ReusableTable
-        columns={[
-          {
-            id: "image",
-            label: "Image",
-            renderCell: (row) => (
-              <img
-                src={row.image}
-                alt={row.title}
-                style={{ width: 50, borderRadius: 6 }}
-              />
-            ),
-          },
-          { id: "title", label: "Title" },
-          { id: "category", label: "Category" },
-          { id: "actions", label: "Actions", hasActions: true },
-        ]}
+        columns={columns}
         rows={items}
         totalCount={totalCount}
         page={page}
         rowsPerPage={rowsPerPage}
         onPageChange={(e, newPage) => setPage(newPage)}
-        onRowsPerPageChange={(e) =>
-          setRowsPerPage(parseInt(e.target.value, 10))
-        }
+        onRowsPerPageChange={(e) => {
+          setRowsPerPage(parseInt(e.target.value, 10));
+          setPage(0);
+        }}
         renderActions={(row) => (
           <>
             <Button color="error" onClick={() => deleteItem(row._id)}>
@@ -114,9 +118,10 @@ export default function GalleryPage() {
               onClick={() => {
                 setSelectedItem(row);
                 setFormData({
-                  title: row.title,
-                  category: row.category,
-                  image: row.image,
+                  title: row.title || "",
+                  category: row.category || "",
+                  image: row.image || "",
+                  _id: row._id,
                 });
                 setOpen(true);
               }}

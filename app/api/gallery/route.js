@@ -4,6 +4,23 @@ import path from "path";
 import { connectToDB } from "../../lib/db";
 import GalleryItem from "../../models/GalleryItem";
 
+export async function GET(req) {
+  await connectToDB();
+
+  const { searchParams } = new URL(req.url);
+  const page = parseInt(searchParams.get("page") || "0");
+  const limit = parseInt(searchParams.get("limit") || "10");
+
+  const skip = page * limit;
+
+  const [items, totalCount] = await Promise.all([
+    GalleryItem.find().sort({ createdAt: -1 }).skip(skip).limit(limit),
+    GalleryItem.countDocuments(),
+  ]);
+
+  return NextResponse.json({ data: items, totalCount });
+}
+
 export async function POST(req) {
   try {
     const formData = await req.formData();
@@ -35,10 +52,4 @@ export async function POST(req) {
     console.error(err);
     return NextResponse.json({ error: "Internal error" }, { status: 500 });
   }
-}
-
-export async function GET() {
-  await connectToDB();
-  const items = await GalleryItem.find().sort({ createdAt: -1 });
-  return NextResponse.json({ data: items });
 }

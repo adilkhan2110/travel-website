@@ -206,3 +206,7 @@ img {
   padding: 11px;
   border: 1px solid #c4c4c4 !important;
 }
+
+.image-upload-container h6 {
+  font-size: 13px;
+}

@@ -43,14 +43,14 @@ export default function ReusableTable({
           </TableHead>
           <TableBody>
             {rows?.map((row) => (
-              <TableRow key={row._id}>
-                {columns.map((col) => (
+              <TableRow key={row?._id}>
+                {columns?.map((col) => (
                   <TableCell key={col.id}>
                     {col.renderCell
                       ? col.renderCell(row)
                       : col.hasActions
                       ? renderActions?.(row)
-                      : row[col.id]}
+                      : row?.[col.id] ?? "--"}
                   </TableCell>
                 ))}
               </TableRow>
