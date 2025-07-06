@@ -8,9 +8,15 @@ export async function GET(req) {
   await connectToDB();
 
   const { searchParams } = new URL(req.url);
+  const getAll = searchParams.get("all") === "true";
+
+  if (getAll) {
+    const items = await GalleryItem.find().sort({ createdAt: -1 });
+    return NextResponse.json({ data: items, totalCount: items.length });
+  }
+
   const page = parseInt(searchParams.get("page") || "0");
   const limit = parseInt(searchParams.get("limit") || "10");
-
   const skip = page * limit;
 
   const [items, totalCount] = await Promise.all([
@@ -20,6 +26,7 @@ export async function GET(req) {
 
   return NextResponse.json({ data: items, totalCount });
 }
+
 
 export async function POST(req) {
   try {

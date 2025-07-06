@@ -15,10 +15,13 @@ const useGalleryStore = create((set, get) => ({
   setPage: (page) => set({ page }),
   setRowsPerPage: (rowsPerPage) => set({ rowsPerPage }),
 
-  fetchItems: async (page, rowsPerPage) => {
+  fetchItems: async (page, rowsPerPage, all = false) => {
+
+     
     set({ isFetchingItems: true });
     try {
-      const response = await fetch(
+      const response = await fetch(all ?
+        `/api/gallery?all=true` :
         `/api/gallery?page=${page}&limit=${rowsPerPage}`
       );
       const data = await response.json();

@@ -35,7 +35,7 @@ export default function GalleryPage() {
   const [selectedItem, setSelectedItem] = useState(null);
 
   useEffect(() => {
-    fetchItems(page, rowsPerPage);
+    fetchItems(0, 1);
   }, [page, rowsPerPage]);
 
   const columns = [
