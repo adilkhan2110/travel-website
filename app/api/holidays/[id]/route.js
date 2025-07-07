@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import Holiday from "@/models/Holiday";
+import Holiday from "../../../models/Holiday";
 import { connectToDB } from "../../../lib/db";
  
 

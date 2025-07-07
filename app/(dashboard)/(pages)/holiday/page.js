@@ -1,129 +1,220 @@
-'use client';
+"use client";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { Button, Card, Modal } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import Popover from "@mui/material/Popover";
+import { useEffect, useState } from "react";
+import HolidayModal from "../../../../components/holiday-modal/HolidayModal";
+import ReusableTable from "../../../../components/ReusableTable/ReusableTable";
+import useHolidayPackages from "../../../../store/useHolidayPackages";
 
-import { useState } from 'react';
+function RowActions({ row, onDelete, onEdit }) {
+  const [anchorEl, setAnchorEl] = useState(null);
 
-export default function AddHolidayPage() {
-  const [form, setForm] = useState({
-    title: '',
-    price: '',
-    country: '',
-    nights: '',
-    days: '',
-    includes: '',
-  });
-  const [image, setImage] = useState(null);
-  const [message, setMessage] = useState('');
-  const [loading, setLoading] = useState(false);
-
-  const handleChange = e => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
   };
 
-  const handleSubmit = async e => {
-    e.preventDefault();
-    setLoading(true);
-    setMessage('');
+  const handleClosePopover = () => {
+    setAnchorEl(null);
+  };
 
-    const formData = new FormData();
-    formData.append('title', form.title);
-    formData.append('price', form.price);
-    formData.append('country', form.country);
-    formData.append('nights', form.nights);
-    formData.append('days', form.days);
-    formData.append('includes', JSON.stringify(form.includes.split(','))); // comma-separated
-    formData.append('image', image);
+  const openPopover = Boolean(anchorEl);
+  const id = openPopover ? `popover-${row._id}` : undefined;
 
-    try {
-      const res = await fetch('/api/holidays', {
-        method: 'POST',
-        body: formData,
-      });
-      const data = await res.json();
-      if (res.ok) {
-        setMessage('Holiday package added!');
-        setForm({ title: '', price: '', country: '', nights: '', days: '', includes: '' });
-        setImage(null);
-      } else {
-        setMessage(data.error || 'Failed to add package');
-      }
-    } catch (err) {
-      console.error(err);
-      setMessage('Error occurred');
-    } finally {
-      setLoading(false);
+  return (
+    <>
+      <IconButton aria-describedby={id} onClick={handleClick}>
+        <MoreVertIcon />
+      </IconButton>
+      <Popover
+        id={id}
+        open={openPopover}
+        anchorEl={anchorEl}
+        onClose={handleClosePopover}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "left",
+        }}
+      >
+        <div className="p-2 flex flex-col">
+          <Button
+            color="error"
+            onClick={() => {
+              onDelete(row._id);
+              handleClosePopover();
+            }}
+          >
+            Delete
+          </Button>
+          <Button
+            onClick={() => {
+              onEdit(row);
+              handleClosePopover();
+            }}
+          >
+            Edit
+          </Button>
+        </div>
+      </Popover>
+    </>
+  );
+}
+
+export default function AddTourPackage() {
+  const {
+    items,
+    totalCount,
+    page,
+    rowsPerPage,
+    fetchItems,
+    setPage,
+    setRowsPerPage,
+    deleteItem,
+    addItem,
+    updateItem,
+    isFetchingItems,
+    isAddingItem,
+  } = useHolidayPackages();
+
+  const [open, setOpen] = useState(false);
+  const [formData, setFormData] = useState({
+    title: "",
+    priceINR: "",
+    nights: "",
+    days: "",
+    image: null,
+    _id: null,
+  });
+  const [selectedItem, setSelectedItem] = useState(null);
+
+  useEffect(() => {
+    fetchItems(page, rowsPerPage);
+  }, [page, rowsPerPage]);
+
+  const columns = [
+    {
+      id: "image",
+      label: "image",
+      renderCell: (row) => (
+        <img
+          src={row?.image}
+          alt={row?.title}
+          style={{ width: 50, borderRadius: 6 }}
+        />
+      ),
+    },
+    { id: "title", label: "Package Name" },
+    { id: "days", label: "Day" },
+    { id: "nights", label: "Nights" },
+    { id: "actions", label: "Actions", hasActions: true },
+  ];
+
+  const handleOpen = () => {
+    setFormData({ title: "", category: "", image: null, _id: null });
+    setSelectedItem(null);
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setFormData({ title: "", category: "", image: null, _id: null });
+    setSelectedItem(null);
+    setOpen(false);
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value, files } = e.target;
+    if (name === "image") {
+      setFormData((prev) => ({ ...prev, image: files[0] }));
+    } else {
+      setFormData((prev) => ({ ...prev, [name]: value }));
     }
   };
 
+  const handleSubmit = async () => {
+    const form = new FormData();
+    form.append("title", formData.title);
+    form.append("priceINR", formData.priceINR);
+    form.append("nights", formData.nights);
+    form.append("days", formData.days);
+    if (formData.image) form.append("image", formData.image);
+
+    if (selectedItem) {
+      await updateItem(selectedItem._id, form);
+    } else {
+      await addItem(form);
+    }
+
+    handleClose();
+    fetchItems(page, rowsPerPage);
+  };
+
   return (
-    <div className="max-w-md mx-auto mt-10 p-6 border rounded">
-      <h2 className="text-xl font-bold mb-4">Add Holiday Package</h2>
-      {message && <p className="mb-2 text-green-600">{message}</p>}
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <input
-          name="title"
-          value={form.title}
-          onChange={handleChange}
-          placeholder="Title"
-          className="w-full border p-2 rounded"
-          required
+    <div className="p-6">
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-2xl font-bold">Tours & Holidays</h2>
+        <Button variant="contained" className="" onClick={handleOpen}>
+          Add New Item
+        </Button>
+      </div>
+
+      <Card className="p-4 mb-4">
+        <ReusableTable
+          columns={columns}
+          rows={items}
+          totalCount={totalCount}
+          page={page}
+          rowsPerPage={rowsPerPage}
+          onPageChange={(e, newPage) => setPage(newPage)}
+          onRowsPerPageChange={(e) => {
+            setRowsPerPage(parseInt(e.target.value, 10));
+            setPage(0);
+          }}
+          loading={isFetchingItems}
+          renderActions={(row) => (
+            <RowActions
+              row={row}
+              onDelete={deleteItem}
+              onEdit={(row) => {
+                setSelectedItem(row);
+                setFormData({
+                  title: row.title || "",
+                  price: row.price || "",
+                  country: row.country || "",
+                  nights: row.nights || "",
+                  days: row.days || "",
+                  includes: row.includes || [],
+                  image: row.image || "",
+                  _id: row._id,
+                });
+                setOpen(true);
+              }}
+            />
+          )}
         />
-        <input
-          name="price"
-          value={form.price}
-          onChange={handleChange}
-          placeholder="Price"
-          type="number"
-          className="w-full border p-2 rounded"
-          required
-        />
-        <input
-          name="country"
-          value={form.country}
-          onChange={handleChange}
-          placeholder="Country"
-          className="w-full border p-2 rounded"
-          required
-        />
-        <input
-          name="days"
-          value={form.days}
-          onChange={handleChange}
-          placeholder="Days"
-          type="number"
-          className="w-full border p-2 rounded"
-          required
-        />
-        <input
-          name="nights"
-          value={form.nights}
-          onChange={handleChange}
-          placeholder="Nights"
-          type="number"
-          className="w-full border p-2 rounded"
-          required
-        />
-        <input
-          name="includes"
-          value={form.includes}
-          onChange={handleChange}
-          placeholder="Includes (comma-separated)"
-          className="w-full border p-2 rounded"
-        />
-        <input
-          type="file"
-          accept="image/*"
-          onChange={e => setImage(e.target.files[0])}
-          className="w-full border p-2 rounded"
-          required
-        />
-        <button
-          type="submit"
-          disabled={loading}
-          className="bg-blue-600 text-white px-4 py-2 rounded"
+      </Card>
+
+      <Modal open={open} onClose={handleClose}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center", // vertically center for large view
+            height: "100%",
+            overflowY: "auto", // allow vertical scroll if content overflows
+            padding: "20px", // prevent content from touching edges
+             
+          }}
         >
-          {loading ? 'Submitting...' : 'Submit'}
-        </button>
-      </form>
+          <HolidayModal
+            formData={formData}
+            handleInputChange={handleInputChange}
+            handleSubmit={handleSubmit}
+            handleClose={handleClose}
+            isEdit={!!selectedItem}
+          />
+        </div>
+      </Modal>
     </div>
   );
 }

@@ -58,8 +58,8 @@ export async function POST(req) {
 export async function GET() {
   try {
     await connectToDB();
-    const holidays = await Holiday.find();
-    return NextResponse.json({ holidays });
+    const data = await Holiday.find();
+    return NextResponse.json({ data });
   } catch (err) {
     return NextResponse.json({ error: "Failed to fetch" }, { status: 500 });
   }

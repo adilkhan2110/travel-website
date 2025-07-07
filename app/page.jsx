@@ -16,10 +16,10 @@ export default function HomePage() {
       <HeroSection />
       <ServicesGrid />
       <InternationalTours />
-      <GlobalVisaService />
       {/* <FeaturedDestinations /> */}
       <StatsSection />
-      <TestimonialsSection />
+      <GlobalVisaService />
+      {/* <TestimonialsSection /> */}
       <Footer />
       <WhatsAppWidget />
     </main>
