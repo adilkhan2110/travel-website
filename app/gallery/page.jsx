@@ -14,7 +14,7 @@ export default function GalleryPage() {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   useEffect(() => {
-    fetchItems("", "", true); // Fetch all items on initial load
+    fetchItems("", "", true);  
   }, [fetchItems]);
 
   // Normalize and map backend data

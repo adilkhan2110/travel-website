@@ -1,6 +1,6 @@
 import SideNav from "../../../components/admin/master/sidenav"; // Correct path based on file structure
 import AdminHeader from "../../../components/admin/master/header"; // Correct path based on file structure
-
+import { ToastContainer } from "react-toastify";
 export const metadata = {
   title: "2 Your Gateway to Amazing Destinations",
   description:
@@ -17,6 +17,7 @@ export default function RootLayout({ children }) {
         <SideNav />
         <AdminHeader />
         <main className="ml-0 md:ml-64 p-6">{children}</main>
+        <ToastContainer />
       </body>
     </html>
   );

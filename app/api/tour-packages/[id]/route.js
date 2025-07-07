@@ -13,13 +13,42 @@ export async function GET(_, { params }) {
 }
 
 export async function PUT(req, { params }) {
-  await connectToDB();
-  const data = await req.json();
+  const { id } = params;
 
-  const updated = await TourPackage.findByIdAndUpdate(params.id, data, {
-    new: true,
-  });
-  return NextResponse.json({ success: true, data: updated });
+  const formData = await req.formData(); // ✅ instead of req.json()
+
+  const title = formData.get("title");
+  const priceINR = Number(formData.get("priceINR"));
+  const nights = Number(formData.get("nights"));
+  const days = Number(formData.get("days"));
+  const image = formData.get("bannerImage");
+
+  let bannerImagePath;
+
+  if (image && typeof image !== "string") {
+    const bytes = await image.arrayBuffer();
+    const buffer = Buffer.from(bytes);
+    const fileName = `${Date.now()}_${image.name}`;
+    const uploadPath = path.join(process.cwd(), "public/uploads", fileName);
+    fs.writeFileSync(uploadPath, buffer);
+    bannerImagePath = `/uploads/${fileName}`;
+  }
+
+  await connectToDB();
+
+  const updatedPackage = await TourPackage.findByIdAndUpdate(
+    id,
+    {
+      title,
+      priceINR,
+      nights,
+      days,
+      ...(bannerImagePath && { bannerImage: bannerImagePath }),
+    },
+    { new: true }
+  );
+
+  return NextResponse.json({ success: true, data: updatedPackage });
 }
 
 export async function DELETE(_, { params }) {

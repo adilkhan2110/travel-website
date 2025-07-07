@@ -94,6 +94,8 @@ const AddEditModal = ({ formData, handleClose, isEdit }) => {
     <Box
       sx={{ width: 400, bgcolor: "background.paper", p: 4, borderRadius: 2 }}
     >
+      <h4 className="modal-title"> {isEdit ? "Update" : "Add"} Gallary Iamge</h4>
+
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Box sx={{ mb: 2 }}>

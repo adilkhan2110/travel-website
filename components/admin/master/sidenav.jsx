@@ -35,8 +35,8 @@ export default function SideNav() {
 
 function NavLinks({ onLinkClick }) {
   const links = [
-    { href: '/', label: 'Home' },
-    { href: '/destinations', label: 'Destinations' },
+    { href: '/gallery-view', label: 'gallery view' },
+    { href: '/add-tour-package', label: 'Tour' },
     { href: '/packages', label: 'Packages' },
     { href: '/visa-services', label: 'Visa Services' },
     { href: '/contact', label: 'Contact Us' },

@@ -200,6 +200,12 @@ img {
   }
 }
 
+.modal-title {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
 .image-upload-container label {
   width: 100%;
   text-align: left !important;

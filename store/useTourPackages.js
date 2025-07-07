@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { toast } from "react-toastify";
-const useGalleryStore = create((set, get) => ({
+const useTourPackages = create((set, get) => ({
   items: [],
   totalCount: 0,
   page: 0,
@@ -20,8 +20,8 @@ const useGalleryStore = create((set, get) => ({
     try {
       const response = await fetch(
         all
-          ? `/api/gallery?all=true`
-          : `/api/gallery?page=${page}&limit=${rowsPerPage}`
+          ? `/api/tour-packages?all=true`
+          : `/api/tour-packages?page=${page}&limit=${rowsPerPage}`
       );
       const data = await response.json();
       set({
@@ -38,7 +38,7 @@ const useGalleryStore = create((set, get) => ({
   addItem: async (formData) => {
     set({ isAddingItem: true });
     try {
-      const response = await fetch("/api/gallery", {
+      const response = await fetch("/api/tour-packages", {
         method: "POST",
         body: formData,
       });
@@ -63,7 +63,7 @@ const useGalleryStore = create((set, get) => ({
   updateItem: async (id, formData) => {
     set({ isUpdatingItem: true });
     try {
-      const response = await fetch(`/api/gallery/${id}`, {
+      const response = await fetch(`/api/tour-packages/${id}`, {
         method: "PUT",
         body: formData,
       });
@@ -83,7 +83,7 @@ const useGalleryStore = create((set, get) => ({
   deleteItem: async (id) => {
     set({ isDeletingItem: true });
     try {
-      const response = await fetch(`/api/gallery/${id}`, {
+      const response = await fetch(`/api/tour-packages/${id}`, {
         method: "DELETE",
       });
       if (!response.ok) throw new Error("Failed to delete item");
@@ -103,4 +103,4 @@ const useGalleryStore = create((set, get) => ({
   },
 }));
 
-export default useGalleryStore;
+export default useTourPackages;

@@ -1,4 +1,3 @@
-// app/dashboard/gallery/page.jsx
 "use client";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { Button, Card, Modal } from "@mui/material";
@@ -8,6 +7,59 @@ import { useEffect, useState } from "react";
 import AddEditModal from "../../../../components/gallary/addEditmodal";
 import ReusableTable from "../../../../components/ReusableTable/ReusableTable";
 import useGalleryStore from "../../../../store/useGalleryStore ";
+
+function RowActions({ row, onDelete, onEdit }) {
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClosePopover = () => {
+    setAnchorEl(null);
+  };
+
+  const openPopover = Boolean(anchorEl);
+  const id = openPopover ? `popover-${row._id}` : undefined;
+
+  return (
+    <>
+      <IconButton aria-describedby={id} onClick={handleClick}>
+        <MoreVertIcon />
+      </IconButton>
+      <Popover
+        id={id}
+        open={openPopover}
+        anchorEl={anchorEl}
+        onClose={handleClosePopover}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "left",
+        }}
+      >
+        <div className="p-2 flex flex-col">
+          <Button
+            color="error"
+            onClick={() => {
+              onDelete(row._id);
+              handleClosePopover();
+            }}
+          >
+            Delete
+          </Button>
+          <Button
+            onClick={() => {
+              onEdit(row);
+              handleClosePopover();
+            }}
+          >
+            Edit
+          </Button>
+        </div>
+      </Popover>
+    </>
+  );
+}
 
 export default function GalleryPage() {
   const {
@@ -35,7 +87,7 @@ export default function GalleryPage() {
   const [selectedItem, setSelectedItem] = useState(null);
 
   useEffect(() => {
-    fetchItems(0, 1);
+    fetchItems(page, rowsPerPage);
   }, [page, rowsPerPage]);
 
   const columns = [
@@ -96,7 +148,7 @@ export default function GalleryPage() {
     <div className="p-6">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-bold">Gallery</h2>
-        <Button variant="contained" color="primary" onClick={handleOpen}>
+        <Button variant="contained" className="" onClick={handleOpen}>
           Add New Item
         </Button>
       </div>
@@ -114,65 +166,22 @@ export default function GalleryPage() {
             setPage(0);
           }}
           loading={isFetchingItems}
-          renderActions={(row) => {
-  const [anchorEl, setAnchorEl] = useState(null);
-
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClosePopover = () => {
-    setAnchorEl(null);
-  };
-
-  const openPopover = Boolean(anchorEl);
-  const id = openPopover ? `popover-${row._id}` : undefined;
-
-  return (
-    <div>
-      <IconButton aria-describedby={id} onClick={handleClick}>
-        <MoreVertIcon />
-      </IconButton>
-      <Popover
-        id={id}
-        open={openPopover}
-        anchorEl={anchorEl}
-        onClose={handleClosePopover}
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "left",
-        }}
-      >
-        <div className="p-2 flex flex-col">
-          <Button
-            color="error"
-            onClick={() => {
-              deleteItem(row._id);
-              handleClosePopover();
-            }}
-          >
-            Delete
-          </Button>
-          <Button
-            onClick={() => {
-              setSelectedItem(row);
-              setFormData({
-                title: row.title || "",
-                category: row.category || "",
-                image: row.image || "",
-                _id: row._id,
-              });
-              setOpen(true);
-              handleClosePopover();
-            }}
-          >
-            Edit
-          </Button>
-        </div>
-      </Popover>
-    </div>
-  );
-}}
+          renderActions={(row) => (
+            <RowActions
+              row={row}
+              onDelete={deleteItem}
+              onEdit={(row) => {
+                setSelectedItem(row);
+                setFormData({
+                  title: row.title || "",
+                  category: row.category || "",
+                  image: row.image || "",
+                  _id: row._id,
+                });
+                setOpen(true);
+              }}
+            />
+          )}
         />
       </Card>
 
