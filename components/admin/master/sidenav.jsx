@@ -1,8 +1,10 @@
-'use client'; // If using Next.js 13+ with app directory
+"use client"; // If using Next.js 13+ with app directory
 
-import { useState } from 'react';
-import Link from 'next/link';
-import { Menu, X } from 'lucide-react'; // npm install lucide-react
+import { useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Menu, X } from "lucide-react"; // npm install lucide-react
+import clsx from "clsx"; // npm install clsx
 
 export default function SideNav() {
   const [isOpen, setIsOpen] = useState(false);
@@ -34,26 +36,35 @@ export default function SideNav() {
 }
 
 function NavLinks({ onLinkClick }) {
+  const pathname = usePathname();
+
   const links = [
-    { href: '/gallery-view', label: 'gallery view' },
-    { href: '/add-tour-package', label: 'Tour' },
-    { href: '/packages', label: 'Packages' },
-    { href: '/visa-services', label: 'Visa Services' },
-    { href: '/contact', label: 'Contact Us' },
+    { href: "/add-tour-package", label: "Tour Package" },
+    { href: "/holiday", label: "Holiday" },
+    { href: "/gallery-view", label: "Gallery View" },
+    { href: "/visa-update", label: "Visa Services" },
   ];
 
   return (
     <nav className="flex flex-col space-y-4">
-      {links.map((link) => (
-        <Link
-          key={link.href}
-          href={link.href}
-          onClick={onLinkClick}
-          className="hover:bg-gray-700 p-2 rounded"
-        >
-          {link.label}
-        </Link>
-      ))}
+      {links.map((link) => {
+        const isActive = pathname === link.href;
+        return (
+          <Link
+            key={link.href}
+            href={link.href}
+            onClick={onLinkClick}
+            className={clsx(
+              "p-2 rounded transition-colors duration-200",
+              isActive
+                ? "bg-gray-700 font-semibold"
+                : "hover:bg-gray-700 hover:text-white"
+            )}
+          >
+            {link.label}
+          </Link>
+        );
+      })}
     </nav>
   );
 }

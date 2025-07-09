@@ -145,7 +145,7 @@ export default function GalleryPage() {
   };
 
   return (
-    <div className="p-6">
+    <div  >
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-bold">Gallery</h2>
         <Button variant="contained" className="" onClick={handleOpen}>

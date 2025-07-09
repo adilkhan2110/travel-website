@@ -30,7 +30,7 @@ export default function RHFTagInput({ name, label, helperText, ...other }) {
         return (
           <>
             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 1 }}>
-              {field.value.map((tag, index) => (
+              {field?.value?.map((tag, index) => (
                 <Chip
                   key={index}
                   label={tag}

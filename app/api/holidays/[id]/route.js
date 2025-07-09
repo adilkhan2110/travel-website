@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
-import Holiday from "../../../models/Holiday";
 import { connectToDB } from "../../../lib/db";
- 
+import Holiday from "../../../models/Holiday";
 
+import { writeFile } from "fs/promises";
+import path from "path";
 // GET one
 export async function GET(req, { params }) {
   try {
@@ -21,14 +22,39 @@ export async function GET(req, { params }) {
 export async function PUT(req, { params }) {
   try {
     await connectToDB();
-    const data = await req.json(); // JSON, not FormData
-    const updated = await Holiday.findByIdAndUpdate(params.id, data, { new: true });
-    if (!updated) {
-      return NextResponse.json({ error: "Update failed" }, { status: 404 });
+    const form = await req.formData();
+
+    const data = {
+      title: form.get("title"),
+      price: form.get("price"),
+      country: form.get("country"),
+      nights: form.get("nights"),
+      days: form.get("days"),
+      includes: JSON.parse(form.get("includes") || "[]"),
+    };
+
+    const image = form.get("image");
+
+    if (image && image.arrayBuffer) {
+      const buffer = Buffer.from(await image.arrayBuffer());
+      const filename = Date.now() + "-" + image.name;
+      const filepath = path.join("public/uploads", filename);
+      await writeFile(filepath, buffer);
+      data.image = `/uploads/${filename}`;
     }
+
+    const updated = await Holiday.findByIdAndUpdate(params.id, data, {
+      new: true,
+    });
+
+    if (!updated)
+      return NextResponse.json({ error: "Update failed" }, { status: 404 });
     return NextResponse.json(updated);
   } catch (err) {
-    return NextResponse.json({ error: "Error updating" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Something went wrong" },
+      { status: 500 }
+    );
   }
 }
 

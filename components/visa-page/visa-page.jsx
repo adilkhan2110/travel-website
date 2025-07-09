@@ -1,41 +1,24 @@
 "use client";
 
-import { Box, Button, Grid } from "@mui/material";
-import { FormProvider, useForm } from "react-hook-form";
-import { RHFTextField } from "../ui/hook-form";
-import RHFImageUpload from "../ui/hook-form/rhf-image-upload";
-import RHFTagInput from "../ui/hook-form/RHFTagInput";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
+import { Box, Button } from "@mui/material";
 import { useEffect } from "react";
-import useHolidayPackages from "../../store/useHolidayPackages";
+import { FormProvider, useForm } from "react-hook-form";
+import * as yup from "yup";
+import useVisaDetail from "../../store/useVisaDetail";
+
+import RHFImageUpload from "../../components/ui/hook-form/rhf-image-upload";
+import RHFQuillEditor from "../../components/ui/hook-form/RHFQuillEditor";
+import { RHFTextField } from "../../components/ui/hook-form";
 
 // ✅ Validation schema
 const schema = yup.object().shape({
   title: yup.string().required("Title is required"),
   price: yup.string().required("Price is required"),
-  country: yup.string().required("Country is required"),
-  nights: yup
-    .number()
-    .typeError("Nights must be a number")
-    .required("Nights are required")
-    .min(1, "Nights must be at least 1"),
-  days: yup
-    .number()
-    .typeError("Days must be a number")
-    .required("Days are required")
-    .test(
-      "day-night-difference",
-      "Days must be equal to nights or nights + 1",
-      function (value) {
-        const { nights } = this.parent;
-        return value === nights || value === nights + 1;
-      }
-    ),
-  includes: yup
-    .array()
-    .of(yup.string())
-    .min(1, "At least one include item is required"),
+  description: yup.string().required("Description is required"),
+  processing: yup.string().required("Description is required"),
+  validity: yup.string().required("Description is required"),
+  requirements: yup.string().required("Description is required"),
   image: yup
     .mixed()
     .test("required", "At least one image is required", (value) => {
@@ -43,18 +26,19 @@ const schema = yup.object().shape({
     }),
 });
 
-const HolidayModal = ({ formData, handleClose, isEdit }) => {
-  const { addItem, updateItem } = useHolidayPackages();
+const VisaView = ({ formData, handleClose, isEdit }) => {
+  const { addItem, updateItem } = useVisaDetail();
 
   const methods = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
       title: "",
       price: "",
-      country: "",
-      nights: "",
-      days: "",
-      includes: [],
+      description: "",
+      processing: "",
+      validity: "",
+      requirements: "",
+
       image: [],
     },
   });
@@ -69,7 +53,7 @@ const HolidayModal = ({ formData, handleClose, isEdit }) => {
         country: formData.country || "",
         nights: formData.nights || "",
         days: formData.days || "",
-        includes: formData.includes || [],
+
         image: formData.image ? [`http://localhost:3000${formData.image}`] : [],
       });
     }
@@ -83,7 +67,7 @@ const HolidayModal = ({ formData, handleClose, isEdit }) => {
       formDataToSend.append("country", data.country);
       formDataToSend.append("nights", data.nights);
       formDataToSend.append("days", data.days);
-      formDataToSend.append("includes", JSON.stringify(data.includes));
+      formDataToSend.append("description", data.description);
 
       data.image.forEach((img) => {
         if (img instanceof File) {
@@ -106,14 +90,13 @@ const HolidayModal = ({ formData, handleClose, isEdit }) => {
   return (
     <Box
       sx={{
-        width: 800,
         bgcolor: "background.paper",
         p: 4,
         borderRadius: 2,
       }}
-      className="modal-content"
+      className="page-content"
     >
-      <h4 className="modal-title">{isEdit ? "Update" : "Add"} Tour</h4>
+      <h4 className="modal-title">{isEdit ? "Update" : "Add"} Visa</h4>
 
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -146,8 +129,9 @@ const HolidayModal = ({ formData, handleClose, isEdit }) => {
               type="number"
               label="Days"
             />
-            <Box className="w-full">
-              <RHFTagInput name="includes" label="Includes (comma separated)" />
+
+            <Box sx={{ width: "100%", mb: 4 }}>
+              <RHFQuillEditor name="description" label="Description" />
             </Box>
 
             <RHFImageUpload name="image" label="Tour Image" />
@@ -167,4 +151,4 @@ const HolidayModal = ({ formData, handleClose, isEdit }) => {
   );
 };
 
-export default HolidayModal;
+export default VisaView;

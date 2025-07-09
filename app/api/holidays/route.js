@@ -55,12 +55,30 @@ export async function POST(req) {
   }
 }
 
-export async function GET() {
+export async function GET(req) {
   try {
     await connectToDB();
-    const data = await Holiday.find();
-    return NextResponse.json({ data });
+
+    const { searchParams } = new URL(req.url);
+    const getAll = searchParams.get("all") === "true";
+
+    if (getAll) {
+      const allItems = await Holiday.find().sort({ createdAt: -1 });
+      return NextResponse.json({ data: allItems, totalCount: allItems.length });
+    }
+
+    const page = parseInt(searchParams.get("page") || "0", 10);
+    const limit = parseInt(searchParams.get("limit") || "10", 10);
+    const skip = page * limit;
+
+    const [items, totalCount] = await Promise.all([
+      Holiday.find().sort({ createdAt: -1 }).skip(skip).limit(limit),
+      Holiday.countDocuments(),
+    ]);
+
+    return NextResponse.json({ data: items, totalCount });
   } catch (err) {
     return NextResponse.json({ error: "Failed to fetch" }, { status: 500 });
   }
 }
+

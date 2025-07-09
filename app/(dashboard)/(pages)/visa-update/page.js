@@ -4,9 +4,9 @@ import { Button, Card, Modal } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import Popover from "@mui/material/Popover";
 import { useEffect, useState } from "react";
-import HolidayModal from "../../../../components/holiday-modal/HolidayModal";
+import VisaModal from "../../../../components/visa-modal/VisaModal";
 import ReusableTable from "../../../../components/ReusableTable/ReusableTable";
-import useHolidayPackages from "../../../../store/useHolidayPackages";
+import useVisaDetail from "../../../../store/useVisaDetail";
 
 function RowActions({ row, onDelete, onEdit }) {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -75,7 +75,7 @@ export default function AddTourPackage() {
     updateItem,
     isFetchingItems,
     isAddingItem,
-  } = useHolidayPackages();
+  } = useVisaDetail();
 
   const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState({
@@ -153,7 +153,7 @@ export default function AddTourPackage() {
   return (
     <div>
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-2xl font-bold">Tours & Holidays</h2>
+        <h2 className="text-2xl font-bold">Visa List</h2>
         <Button variant="contained" className="" onClick={handleOpen}>
           Add New Item
         </Button>
@@ -195,7 +195,7 @@ export default function AddTourPackage() {
         />
       </Card>
 
-      <Modal open={open} onClose={handleClose}>
+      {/* <Modal open={open} onClose={handleClose}>
         <div
           style={{
             display: "flex",
@@ -206,7 +206,7 @@ export default function AddTourPackage() {
             padding: "20px",
           }}
         >
-          <HolidayModal
+          <VisaModal
             formData={formData}
             handleInputChange={handleInputChange}
             handleSubmit={handleSubmit}
@@ -214,7 +214,7 @@ export default function AddTourPackage() {
             isEdit={!!selectedItem}
           />
         </div>
-      </Modal>
+      </Modal> */}
     </div>
   );
 }

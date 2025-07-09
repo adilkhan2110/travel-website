@@ -6,8 +6,8 @@ const holidaySchema = new mongoose.Schema({
   country: { type: String, required: true },
   nights: { type: Number, required: true },
   days: { type: Number, required: true },
-  includes: [String], // e.g. ["All Inclusive", "Water Villa"]
-  image: String,      // Path to uploaded image
+  includes: [String],  
+  image: String,       
 });
 
 export default mongoose.models.Holiday || mongoose.model("Holiday", holidaySchema);

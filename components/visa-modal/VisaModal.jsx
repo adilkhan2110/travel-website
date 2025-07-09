@@ -1,20 +1,20 @@
 "use client";
 
-import { Box, Button, Grid } from "@mui/material";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { Box, Button } from "@mui/material";
+import { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
+import * as yup from "yup";
+import useHolidayPackages from "../../store/useHolidayPackages";
 import { RHFTextField } from "../ui/hook-form";
 import RHFImageUpload from "../ui/hook-form/rhf-image-upload";
-import RHFTagInput from "../ui/hook-form/RHFTagInput";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-import { useEffect } from "react";
-import useHolidayPackages from "../../store/useHolidayPackages";
+import RHFQuillEditor from "../ui/hook-form/RHFQuillEditor";
 
 // ✅ Validation schema
 const schema = yup.object().shape({
   title: yup.string().required("Title is required"),
   price: yup.string().required("Price is required"),
-  country: yup.string().required("Country is required"),
+  description: yup.string().required("Description is required"),
   nights: yup
     .number()
     .typeError("Nights must be a number")
@@ -32,10 +32,7 @@ const schema = yup.object().shape({
         return value === nights || value === nights + 1;
       }
     ),
-  includes: yup
-    .array()
-    .of(yup.string())
-    .min(1, "At least one include item is required"),
+
   image: yup
     .mixed()
     .test("required", "At least one image is required", (value) => {
@@ -43,7 +40,7 @@ const schema = yup.object().shape({
     }),
 });
 
-const HolidayModal = ({ formData, handleClose, isEdit }) => {
+const VisaModal = ({ formData, handleClose, isEdit }) => {
   const { addItem, updateItem } = useHolidayPackages();
 
   const methods = useForm({
@@ -54,7 +51,7 @@ const HolidayModal = ({ formData, handleClose, isEdit }) => {
       country: "",
       nights: "",
       days: "",
-      includes: [],
+
       image: [],
     },
   });
@@ -69,7 +66,7 @@ const HolidayModal = ({ formData, handleClose, isEdit }) => {
         country: formData.country || "",
         nights: formData.nights || "",
         days: formData.days || "",
-        includes: formData.includes || [],
+
         image: formData.image ? [`http://localhost:3000${formData.image}`] : [],
       });
     }
@@ -83,7 +80,6 @@ const HolidayModal = ({ formData, handleClose, isEdit }) => {
       formDataToSend.append("country", data.country);
       formDataToSend.append("nights", data.nights);
       formDataToSend.append("days", data.days);
-      formDataToSend.append("includes", JSON.stringify(data.includes));
 
       data.image.forEach((img) => {
         if (img instanceof File) {
@@ -113,7 +109,7 @@ const HolidayModal = ({ formData, handleClose, isEdit }) => {
       }}
       className="modal-content"
     >
-      <h4 className="modal-title">{isEdit ? "Update" : "Add"} Tour</h4>
+      <h4 className="modal-title">{isEdit ? "Update" : "Add"} Visa</h4>
 
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -146,8 +142,9 @@ const HolidayModal = ({ formData, handleClose, isEdit }) => {
               type="number"
               label="Days"
             />
-            <Box className="w-full">
-              <RHFTagInput name="includes" label="Includes (comma separated)" />
+
+            <Box sx={{width: "100%", mb: 2 }}>
+              <RHFQuillEditor name="description" label="Description" />
             </Box>
 
             <RHFImageUpload name="image" label="Tour Image" />
@@ -167,4 +164,4 @@ const HolidayModal = ({ formData, handleClose, isEdit }) => {
   );
 };
 
-export default HolidayModal;
+export default VisaModal;

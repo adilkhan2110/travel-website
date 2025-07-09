@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { toast } from "react-toastify";
-const useHolidayPackages = create((set, get) => ({
+const useVisaDetail = create((set, get) => ({
   items: [],
   totalCount: 0,
   page: 0,
@@ -20,8 +20,8 @@ const useHolidayPackages = create((set, get) => ({
     try {
       const response = await fetch(
         all
-          ? `/api/holidays?all=true`
-          : `/api/holidays?page=${page}&limit=${rowsPerPage}`
+          ? `/api/visa?all=true`
+          : `/api/visa?page=${page}&limit=${rowsPerPage}`
       );
       const data = await response.json();
       set({
@@ -38,7 +38,7 @@ const useHolidayPackages = create((set, get) => ({
   addItem: async (formData) => {
     set({ isAddingItem: true });
     try {
-      const response = await fetch("/api/holidays", {
+      const response = await fetch("/api/visa", {
         method: "POST",
         body: formData,
       });
@@ -65,7 +65,7 @@ const useHolidayPackages = create((set, get) => ({
   updateItem: async (id, formData) => {
     set({ isUpdatingItem: true });
     try {
-      const response = await fetch(`/api/holidays/${id}`, {
+      const response = await fetch(`/api/visa/${id}`, {
         method: "PUT",
         body: formData,
       });
@@ -85,7 +85,7 @@ const useHolidayPackages = create((set, get) => ({
   deleteItem: async (id) => {
     set({ isDeletingItem: true });
     try {
-      const response = await fetch(`/api/holidays/${id}`, {
+      const response = await fetch(`/api/visa/${id}`, {
         method: "DELETE",
       });
       if (!response.ok) throw new Error("Failed to delete item");
@@ -105,4 +105,4 @@ const useHolidayPackages = create((set, get) => ({
   },
 }));
 
-export default useHolidayPackages;
+export default useVisaDetail;

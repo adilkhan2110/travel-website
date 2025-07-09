@@ -231,7 +231,7 @@ th {
 }
 .form-item {
   width: 48% !important;
-  margin-bottom: 20px !important;
+  margin-bottom: 15px !important;
 }
 
 @media (max-width: 768px) {
