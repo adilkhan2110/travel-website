@@ -1,12 +1,16 @@
-"use client"
-import { useState } from "react"
-import Header from "@/components/Header"
-import Footer from "@/components/Footer"
-import WhatsAppWidget from "@/components/WhatsAppWidget"
+"use client";
+import Footer from "@/components/Footer";
+import Header from "@/components/Header";
+import WhatsAppWidget from "@/components/WhatsAppWidget";
+import useVisaDetail from "../../store/useVisaDetail";
+import { useEffect } from "react";
 
 export default function VisaPage() {
-  const [selectedCountry, setSelectedCountry] = useState("")
+  const { items, fetchItems, isFetchingItems } = useVisaDetail();
 
+  useEffect(() => {
+    fetchItems("", "", true);
+  }, [fetchItems]);
   const visaServices = [
     {
       country: "Dubai Visa",
@@ -15,85 +19,33 @@ export default function VisaPage() {
       validity: "30 Days",
       price: "₹2,500",
       requirements: ["Passport", "Photo", "Bank Statement", "Hotel Booking"],
-      description: "Tourist visa for Dubai with quick processing and high approval rate.",
+      description:
+        "Tourist visa for Dubai with quick processing and high approval rate.",
     },
-    {
-      country: "Singapore Visa",
-      image: "/images/singapore.jpg",
-      processing: "5-7 Days",
-      validity: "35 Days",
-      price: "₹3,500",
-      requirements: ["Passport", "Photo", "Bank Statement", "Travel Itinerary"],
-      description: "Singapore tourist visa with multiple entry options available.",
-    },
-    {
-      country: "Thailand Visa",
-      image: "/images/thailand.jpg",
-      processing: "4-6 Days",
-      validity: "60 Days",
-      price: "₹2,800",
-      requirements: ["Passport", "Photo", "Bank Statement", "Flight Tickets"],
-      description: "Thailand tourist visa with extended validity period.",
-    },
-    {
-      country: "Malaysia Visa",
-      image: "/images/malaysia.jpg",
-      processing: "3-4 Days",
-      validity: "30 Days",
-      price: "₹2,200",
-      requirements: ["Passport", "Photo", "Bank Statement", "Hotel Confirmation"],
-      description: "Malaysia tourist visa with fast processing time.",
-    },
-    {
-      country: "Australia Visa",
-      image: "/images/australia.jpg",
-      processing: "15-20 Days",
-      validity: "1 Year",
-      price: "₹8,500",
-      requirements: ["Passport", "Photo", "Bank Statement", "Employment Letter", "Travel Insurance"],
-      description: "Australia tourist visa with multiple entry facility.",
-    },
-    {
-      country: "UK Visa",
-     image: "/images/gallery-1.jpg",
-      processing: "15-25 Days",
-      validity: "6 Months",
-      price: "₹12,000",
-      requirements: ["Passport", "Photo", "Bank Statement", "Employment Letter", "Travel Insurance", "Hotel Booking"],
-      description: "UK tourist visa with comprehensive documentation support.",
-    },
-    {
-      country: "USA Visa",
-      image: "/images/gallery-4.jpg",
-      processing: "30-45 Days",
-      validity: "10 Years",
-      price: "₹15,000",
-      requirements: ["Passport", "Photo", "DS-160", "Bank Statement", "Employment Letter", "Interview"],
-      description: "USA tourist visa with interview preparation and guidance.",
-    },
-    {
-      country: "Schengen Visa",
-      image: "/images/gallery-1.jpg",
-      processing: "10-15 Days",
-      validity: "90 Days",
-      price: "₹6,500",
-      requirements: ["Passport", "Photo", "Bank Statement", "Travel Insurance", "Hotel Booking", "Flight Tickets"],
-      description: "Schengen visa covering 26 European countries.",
-    },
-  ]
+  ];
 
   const visaTypes = [
     {
       title: "Tourist Visa",
       icon: (
-        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg
+          className="w-8 h-8"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
             strokeWidth={2}
             d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
           />
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
+          />
         </svg>
       ),
       description: "For leisure and sightseeing purposes",
@@ -101,7 +53,12 @@ export default function VisaPage() {
     {
       title: "Business Visa",
       icon: (
-        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg
+          className="w-8 h-8"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -115,8 +72,18 @@ export default function VisaPage() {
     {
       title: "Transit Visa",
       icon: (
-        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+        <svg
+          className="w-8 h-8"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+          />
         </svg>
       ),
       description: "For connecting flights and short layovers",
@@ -124,7 +91,12 @@ export default function VisaPage() {
     {
       title: "Medical Visa",
       icon: (
-        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg
+          className="w-8 h-8"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -135,7 +107,7 @@ export default function VisaPage() {
       ),
       description: "For medical treatment and healthcare",
     },
-  ]
+  ];
 
   return (
     <main>
@@ -146,12 +118,17 @@ export default function VisaPage() {
         <div className="absolute inset-0 bg-black/20"></div>
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center text-white">
-            <h1 className="text-5xl md:text-7xl font-bold mb-6">Visa Services</h1>
-            <p className="text-xl md:text-2xl opacity-90 mb-8">Your Gateway to Global Travel</p>
+            <h1 className="text-5xl md:text-7xl font-bold mb-6">
+              Visa Services
+            </h1>
+            <p className="text-xl md:text-2xl opacity-90 mb-8">
+              Your Gateway to Global Travel
+            </p>
             <div className="max-w-2xl mx-auto">
               <p className="text-lg opacity-80">
-                Get your visa processed quickly and hassle-free with Arisha Tours and Travels. We provide comprehensive
-                visa services for all major destinations worldwide.
+                Get your visa processed quickly and hassle-free with Arisha
+                Tours and Travels. We provide comprehensive visa services for
+                all major destinations worldwide.
               </p>
             </div>
           </div>
@@ -166,7 +143,8 @@ export default function VisaPage() {
               Types of Visa Services
             </h2>
             <p className="text-gray-600 max-w-3xl mx-auto text-lg">
-              We offer various types of visa services to meet your specific travel needs
+              We offer various types of visa services to meet your specific
+              travel needs
             </p>
           </div>
 
@@ -179,7 +157,9 @@ export default function VisaPage() {
                 <div className="bg-gradient-to-r from-blue-500 to-purple-500 text-white p-4 rounded-2xl mx-auto w-fit mb-6 group-hover:scale-110 transition-transform duration-300">
                   {type.icon}
                 </div>
-                <h3 className="text-xl font-bold text-gray-800 mb-4">{type.title}</h3>
+                <h3 className="text-xl font-bold text-gray-800 mb-4">
+                  {type.title}
+                </h3>
                 <p className="text-gray-600">{type.description}</p>
               </div>
             ))}
@@ -195,12 +175,13 @@ export default function VisaPage() {
               Popular Visa Destinations
             </h2>
             <p className="text-gray-600 max-w-3xl mx-auto text-lg">
-              Choose from our most popular visa services with guaranteed processing and support
+              Choose from our most popular visa services with guaranteed
+              processing and support
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            {visaServices.map((visa, index) => (
+            {items?.map((visa, index) => (
               <div
                 key={index}
                 className="bg-white rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-500 group transform hover:-translate-y-2"
@@ -221,24 +202,35 @@ export default function VisaPage() {
                   <h3 className="text-xl font-bold text-gray-800 mb-3 group-hover:text-emerald-600 transition-colors">
                     {visa.country}
                   </h3>
-                  <p className="text-gray-600 text-sm mb-4">{visa.description}</p>
+                  {/* <p className="text-gray-600 text-sm mb-4">
+                    {visa.description}
+                  </p> */}
 
                   <div className="space-y-2 mb-4">
                     <div className="flex justify-between text-sm">
                       <span className="text-gray-500">Processing:</span>
-                      <span className="font-semibold text-gray-700">{visa.processing}</span>
+                      <span className="font-semibold text-gray-700">
+                        {visa.days} Days
+                      </span>
                     </div>
                     <div className="flex justify-between text-sm">
                       <span className="text-gray-500">Validity:</span>
-                      <span className="font-semibold text-gray-700">{visa.validity}</span>
+                      <span className="font-semibold text-gray-700">
+                        {visa.validity} Days
+                      </span>
                     </div>
                   </div>
 
                   <div className="mb-4">
-                    <h4 className="text-sm font-semibold text-gray-800 mb-2">Requirements:</h4>
+                    <h4 className="text-sm font-semibold text-gray-800 mb-2">
+                      Requirements:
+                    </h4>
                     <div className="flex flex-wrap gap-1">
                       {visa.requirements.slice(0, 3).map((req, reqIndex) => (
-                        <span key={reqIndex} className="bg-gray-100 text-gray-600 px-2 py-1 rounded-full text-xs">
+                        <span
+                          key={reqIndex}
+                          className="bg-gray-100 text-gray-600 px-2 py-1 rounded-full text-xs"
+                        >
                           {req}
                         </span>
                       ))}
@@ -272,7 +264,12 @@ export default function VisaPage() {
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             <div className="text-center">
               <div className="bg-gradient-to-r from-green-500 to-emerald-500 text-white p-4 rounded-2xl mx-auto w-fit mb-6">
-                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg
+                  className="w-8 h-8"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -281,13 +278,22 @@ export default function VisaPage() {
                   />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold text-gray-800 mb-3">High Success Rate</h3>
-              <p className="text-gray-600">99% visa approval rate with our expert guidance</p>
+              <h3 className="text-xl font-bold text-gray-800 mb-3">
+                High Success Rate
+              </h3>
+              <p className="text-gray-600">
+                99% visa approval rate with our expert guidance
+              </p>
             </div>
 
             <div className="text-center">
               <div className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white p-4 rounded-2xl mx-auto w-fit mb-6">
-                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg
+                  className="w-8 h-8"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -296,13 +302,22 @@ export default function VisaPage() {
                   />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold text-gray-800 mb-3">Quick Processing</h3>
-              <p className="text-gray-600">Fast visa processing with regular updates</p>
+              <h3 className="text-xl font-bold text-gray-800 mb-3">
+                Quick Processing
+              </h3>
+              <p className="text-gray-600">
+                Fast visa processing with regular updates
+              </p>
             </div>
 
             <div className="text-center">
               <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white p-4 rounded-2xl mx-auto w-fit mb-6">
-                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg
+                  className="w-8 h-8"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -311,13 +326,22 @@ export default function VisaPage() {
                   />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold text-gray-800 mb-3">24/7 Support</h3>
-              <p className="text-gray-600">Round-the-clock assistance for all your queries</p>
+              <h3 className="text-xl font-bold text-gray-800 mb-3">
+                24/7 Support
+              </h3>
+              <p className="text-gray-600">
+                Round-the-clock assistance for all your queries
+              </p>
             </div>
 
             <div className="text-center">
               <div className="bg-gradient-to-r from-orange-500 to-red-500 text-white p-4 rounded-2xl mx-auto w-fit mb-6">
-                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg
+                  className="w-8 h-8"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -326,8 +350,12 @@ export default function VisaPage() {
                   />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold text-gray-800 mb-3">Document Support</h3>
-              <p className="text-gray-600">Complete assistance with documentation</p>
+              <h3 className="text-xl font-bold text-gray-800 mb-3">
+                Document Support
+              </h3>
+              <p className="text-gray-600">
+                Complete assistance with documentation
+              </p>
             </div>
           </div>
         </div>
@@ -336,10 +364,12 @@ export default function VisaPage() {
       {/* CTA Section */}
       <section className="py-20 bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-4xl font-bold text-white mb-6">Ready to Apply for Your Visa?</h2>
+          <h2 className="text-4xl font-bold text-white mb-6">
+            Ready to Apply for Your Visa?
+          </h2>
           <p className="text-white opacity-90 mb-8 max-w-2xl mx-auto text-lg">
-            Get started with your visa application today. Our experts are here to guide you through every step of the
-            process.
+            Get started with your visa application today. Our experts are here
+            to guide you through every step of the process.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button className="bg-white text-emerald-600 hover:bg-gray-100 font-bold py-4 px-8 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
@@ -355,5 +385,5 @@ export default function VisaPage() {
       <Footer />
       <WhatsAppWidget />
     </main>
-  )
+  );
 }

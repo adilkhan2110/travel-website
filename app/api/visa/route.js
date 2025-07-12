@@ -17,7 +17,7 @@ export async function POST(req) {
     const image = formData.get("image");
     const days = formData.get("days");
 
-    const requirements = JSON.parse(requirementsRaw); // assuming JSON.stringify() used on client
+    const requirements = JSON.parse(requirementsRaw); // frontend sends JSON string
 
     if (!image || typeof image === "string") {
       return NextResponse.json(
@@ -53,7 +53,7 @@ export async function POST(req) {
 
     return NextResponse.json({ success: true, data: newVisa }, { status: 201 });
   } catch (err) {
-    console.error(err);
+    console.error("POST /visa error:", err);
     return NextResponse.json(
       { error: "Something went wrong" },
       { status: 500 }
@@ -65,7 +65,7 @@ export async function GET(req) {
   await connectToDB();
 
   const { searchParams } = new URL(req.url);
-  const page = parseInt(searchParams.get("page") || "0"); // 0-based
+  const page = parseInt(searchParams.get("page") || "0");
   const limit = parseInt(searchParams.get("limit") || "10");
   const search = searchParams.get("search") || "";
 

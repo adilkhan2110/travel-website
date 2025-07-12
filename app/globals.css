@@ -242,3 +242,31 @@ th {
     flex-direction: column;
   }
 }
+
+.modal-box .MuiPaper-root {
+  background: #ffffff;
+  width: max-content;
+  margin: auto;
+  padding: 25px;
+  border-radius: 15px;
+}
+.close-btn {
+  display: none;
+}
+
+.modal-box .close-btn {
+  background: red;
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  position: absolute;
+  right: -14px;
+  display: block !important;
+  top: -14px;
+  cursor: pointer;
+  color: #fff;
+}
+
+.modal-box > div {
+  position: relative;
+}

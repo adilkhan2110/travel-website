@@ -6,19 +6,37 @@ import { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import * as yup from "yup";
 import useVisaDetail from "../../store/useVisaDetail";
-
+import RHFTagInput from "../ui/hook-form/RHFTagInput";
 import RHFImageUpload from "../../components/ui/hook-form/rhf-image-upload";
 import RHFQuillEditor from "../../components/ui/hook-form/RHFQuillEditor";
 import { RHFTextField } from "../../components/ui/hook-form";
 
+
+
 // ✅ Validation schema
 const schema = yup.object().shape({
   title: yup.string().required("Title is required"),
-  price: yup.string().required("Price is required"),
+  priceINR: yup
+    .number()
+    .typeError("Price must be a number")
+    .required("Price is required"),
   description: yup.string().required("Description is required"),
-  processing: yup.string().required("Description is required"),
-  validity: yup.string().required("Description is required"),
-  requirements: yup.string().required("Description is required"),
+  processing: yup
+    .number()
+    .typeError("Processing must be a number")
+    .required("Processing is required"),
+  validity: yup
+    .number()
+    .typeError("Validity must be a number")
+    .required("Validity is required"),
+  days: yup
+    .number()
+    .typeError("Days must be a number")
+    .required("Days is required"),
+  requirements: yup
+    .array()
+    .of(yup.string())
+    .min(1, "At least one requirement is required"),
   image: yup
     .mixed()
     .test("required", "At least one image is required", (value) => {
@@ -27,18 +45,19 @@ const schema = yup.object().shape({
 });
 
 const VisaView = ({ formData, handleClose, isEdit }) => {
-  const { addItem, updateItem } = useVisaDetail();
+  const { addItem, updateItem,fetchItems } = useVisaDetail();
+ 
 
   const methods = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
       title: "",
-      price: "",
+      priceINR: "",
       description: "",
       processing: "",
       validity: "",
-      requirements: "",
-
+      days: "",
+      requirements: [],
       image: [],
     },
   });
@@ -49,11 +68,12 @@ const VisaView = ({ formData, handleClose, isEdit }) => {
     if (isEdit && formData) {
       reset({
         title: formData.title || "",
-        price: formData.price || "",
-        country: formData.country || "",
-        nights: formData.nights || "",
+        priceINR: formData.priceINR || "",
+        description: formData.description || "",
+        processing: formData.processing || "",
+        validity: formData.validity || "",
         days: formData.days || "",
-
+        requirements: formData.requirements || [],
         image: formData.image ? [`http://localhost:3000${formData.image}`] : [],
       });
     }
@@ -63,11 +83,12 @@ const VisaView = ({ formData, handleClose, isEdit }) => {
     try {
       const formDataToSend = new FormData();
       formDataToSend.append("title", data.title);
-      formDataToSend.append("price", data.price);
-      formDataToSend.append("country", data.country);
-      formDataToSend.append("nights", data.nights);
-      formDataToSend.append("days", data.days);
+      formDataToSend.append("priceINR", data.priceINR);
       formDataToSend.append("description", data.description);
+      formDataToSend.append("processing", data.processing);
+      formDataToSend.append("validity", data.validity);
+      formDataToSend.append("days", data.days);
+      formDataToSend.append("requirements", JSON.stringify(data.requirements));
 
       data.image.forEach((img) => {
         if (img instanceof File) {
@@ -102,38 +123,39 @@ const VisaView = ({ formData, handleClose, isEdit }) => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <Box className="form-grid">
             <RHFTextField className="form-item" name="title" label="Title" />
-
             <RHFTextField
               className="form-item"
-              name="price"
+              name="priceINR"
               type="number"
               label="Price (INR)"
             />
-
             <RHFTextField
               className="form-item"
-              name="country"
-              label="Country"
-            />
-
-            <RHFTextField
-              className="form-item"
-              name="nights"
+              name="validity"
               type="number"
-              label="Nights"
+              label="Validity (days)"
             />
-
+            <RHFTextField
+              className="form-item"
+              name="processing"
+              type="number"
+              label="Processing Time (days)"
+            />
             <RHFTextField
               className="form-item"
               name="days"
               type="number"
-              label="Days"
+              label="Tour Duration (days)"
             />
-
+            <Box sx={{ width: "48%", mb: 4 }}>
+              <RHFTagInput
+                name="requirements"
+                label="Requirements (comma separated)"
+              />
+            </Box>
             <Box sx={{ width: "100%", mb: 4 }}>
               <RHFQuillEditor name="description" label="Description" />
             </Box>
-
             <RHFImageUpload name="image" label="Tour Image" />
           </Box>
 

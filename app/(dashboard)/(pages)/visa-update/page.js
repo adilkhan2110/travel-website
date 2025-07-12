@@ -1,10 +1,9 @@
 "use client";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { Button, Card, Modal } from "@mui/material";
+import { Button, Card } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import Popover from "@mui/material/Popover";
 import { useEffect, useState } from "react";
-import VisaModal from "../../../../components/visa-modal/VisaModal";
 import ReusableTable from "../../../../components/ReusableTable/ReusableTable";
 import useVisaDetail from "../../../../store/useVisaDetail";
 
@@ -104,51 +103,14 @@ export default function AddTourPackage() {
         />
       ),
     },
-    { id: "title", label: "Package Name" },
-    { id: "days", label: "Day" },
-    { id: "nights", label: "Nights" },
-    { id: "price", label: "Price" },
+    { id: "title", label: "Visa Name" },
+    { id: "days", label: "Processing Day" },
+    { id: "validity", label: "Validity" },
+    { id: "priceINR", label: "Price" },
     { id: "actions", label: "Actions", hasActions: true },
   ];
 
-  const handleOpen = () => {
-    setFormData({ title: "", category: "", image: null, _id: null });
-    setSelectedItem(null);
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setFormData({ title: "", category: "", image: null, _id: null });
-    setSelectedItem(null);
-    setOpen(false);
-  };
-
-  const handleInputChange = (e) => {
-    const { name, value, files } = e.target;
-    if (name === "image") {
-      setFormData((prev) => ({ ...prev, image: files[0] }));
-    } else {
-      setFormData((prev) => ({ ...prev, [name]: value }));
-    }
-  };
-
-  const handleSubmit = async () => {
-    const form = new FormData();
-    form.append("title", formData.title);
-    form.append("priceINR", formData.priceINR);
-    form.append("nights", formData.nights);
-    form.append("days", formData.days);
-    if (formData.image) form.append("image", formData.image);
-
-    if (selectedItem) {
-      await updateItem(selectedItem._id, form);
-    } else {
-      await addItem(form);
-    }
-
-    handleClose();
-    fetchItems(page, rowsPerPage);
-  };
+  const handleOpen = () => {};
 
   return (
     <div>
@@ -194,27 +156,6 @@ export default function AddTourPackage() {
           )}
         />
       </Card>
-
-      {/* <Modal open={open} onClose={handleClose}>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "100%",
-            overflowY: "auto",
-            padding: "20px",
-          }}
-        >
-          <VisaModal
-            formData={formData}
-            handleInputChange={handleInputChange}
-            handleSubmit={handleSubmit}
-            handleClose={handleClose}
-            isEdit={!!selectedItem}
-          />
-        </div>
-      </Modal> */}
     </div>
   );
 }

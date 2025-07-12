@@ -7,13 +7,7 @@ export default function GlobalVisaService() {
 
   const visaServices = [
     { country: "CHINA VISA", image: "/images/dubai.jpg" },
-    { country: "DUBAI VISA", image: "/images/dubai.jpg" },
-    { country: "SCHENGEN VISA", image: "/images/dubai.jpg" },
-    { country: "UK VISA", image: "/images/dubai.jpg" },
-    { country: "US VISA", image: "/images/dubai.jpg" },
-    { country: "TURKEY VISA", image: "/images/dubai.jpg" },
-    { country: "SINGAPORE VISA", image: "/images/dubai.jpg" },
-    { country: "CHINA VISA", image: "/images/dubai.jpg" },
+ 
   ]
 
   useEffect(() => {

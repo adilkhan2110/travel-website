@@ -61,24 +61,34 @@ export async function GET(req) {
 
     const { searchParams } = new URL(req.url);
     const getAll = searchParams.get("all") === "true";
+    const search = searchParams.get("search") || "";
+    const page = Math.max(1, parseInt(searchParams.get("page") || "1", 10));
+    const limit = parseInt(searchParams.get("limit") || "10", 10);
+
+    const query = search ? { title: { $regex: search, $options: "i" } } : {};
 
     if (getAll) {
-      const allItems = await Holiday.find().sort({ createdAt: -1 });
-      return NextResponse.json({ data: allItems, totalCount: allItems.length });
+      const allItems = await Holiday.find(query).sort({ createdAt: -1 });
+      return NextResponse.json({
+        data: allItems,
+        totalCount: allItems.length,
+      });
     }
 
-    const page = parseInt(searchParams.get("page") || "0", 10);
-    const limit = parseInt(searchParams.get("limit") || "10", 10);
-    const skip = page * limit;
+    const skip = (page - 1) * limit;
 
     const [items, totalCount] = await Promise.all([
-      Holiday.find().sort({ createdAt: -1 }).skip(skip).limit(limit),
-      Holiday.countDocuments(),
+      Holiday.find(query).sort({ createdAt: -1 }).skip(skip).limit(limit),
+      Holiday.countDocuments(query),
     ]);
 
-    return NextResponse.json({ data: items, totalCount });
+    return NextResponse.json({
+      data: items,
+      totalCount,
+    });
   } catch (err) {
     return NextResponse.json({ error: "Failed to fetch" }, { status: 500 });
   }
 }
+
 

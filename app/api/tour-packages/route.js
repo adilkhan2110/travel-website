@@ -40,31 +40,65 @@ export async function POST(req) {
   );
 }
 
+// export async function GET(req) {
+//   await connectToDB();
+
+//   const { searchParams } = new URL(req.url);
+//   const page = Math.max(1, parseInt(searchParams.get("page") || "1"));
+//   const limit = parseInt(searchParams.get("limit") || "10");
+//   const search = searchParams.get("search") || "";
+
+//   const query = search ? { title: { $regex: search, $options: "i" } } : {};
+
+//   const total = await TourPackage.countDocuments(query);
+//   const packages = await TourPackage.find(query)
+//     .skip((page - 1) * limit)
+//     .limit(limit)
+//     .sort({ createdAt: -1 });
+
+//   return NextResponse.json(
+//     {
+//       data: packages,
+//       pagination: {
+//         total,
+//         page,
+//         pages: Math.ceil(total / limit),
+//       },
+//     },
+//     { status: 200 }
+//   );
+// }
+
 export async function GET(req) {
   await connectToDB();
 
   const { searchParams } = new URL(req.url);
+
+  const getAll = searchParams.get("all") === "true";
+  const search = searchParams.get("search") || "";
   const page = Math.max(1, parseInt(searchParams.get("page") || "1"));
   const limit = parseInt(searchParams.get("limit") || "10");
-  const search = searchParams.get("search") || "";
 
   const query = search ? { title: { $regex: search, $options: "i" } } : {};
 
-  const total = await TourPackage.countDocuments(query);
-  const packages = await TourPackage.find(query)
-    .skip((page - 1) * limit)
-    .limit(limit)
-    .sort({ createdAt: -1 });
+  if (getAll) {
+    const items = await TourPackage.find(query).sort({ createdAt: -1 });
+    return NextResponse.json({
+      data: items,
+      totalCount: items.length,
+    });
+  }
 
-  return NextResponse.json(
-    {
-      data: packages,
-      pagination: {
-        total,
-        page,
-        pages: Math.ceil(total / limit),
-      },
-    },
-    { status: 200 }
-  );
+  const skip = (page - 1) * limit;
+
+  const [items, totalCount] = await Promise.all([
+    TourPackage.find(query).skip(skip).limit(limit).sort({ createdAt: -1 }),
+    TourPackage.countDocuments(query),
+  ]);
+
+  return NextResponse.json({
+    data: items,
+    totalCount,
+  });
 }
+
