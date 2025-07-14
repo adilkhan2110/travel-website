@@ -12,7 +12,7 @@ import WhatsAppWidget from "@/components/WhatsAppWidget"
 export default function HomePage() {
   return (
     <main>
-      <Header />
+      
       <HeroSection />
       <ServicesGrid />
       <InternationalTours />

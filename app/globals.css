@@ -265,8 +265,22 @@ th {
   top: -14px;
   cursor: pointer;
   color: #fff;
+  border-radius: 50px;
 }
 
 .modal-box > div {
   position: relative;
+}
+
+.view-detail h3,
+.view-detail h4 {
+  font-weight: 600;
+  margin-bottom: 20px;
+  margin-top: 10px;
+}
+
+.view-detail img {
+  height: 380px;
+  border-radius: 10px;
+  object-fit: cover;
 }

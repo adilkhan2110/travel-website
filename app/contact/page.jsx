@@ -6,7 +6,7 @@ import FromPage from "../../components/form/form";
 export default function ContactPage() {
   return (
     <main>
-      <Header />
+     
 
       {/* Hero Section */}
       <section className="relative bg-gradient-to-r from-purple-600 to-purple-800 py-20">

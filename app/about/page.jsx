@@ -11,7 +11,7 @@ export const metadata = {
 export default function AboutPage() {
   return (
     <main>
-      <Header />
+     
 
       {/* Hero Section */}
       <section className="relative bg-gradient-to-r from-purple-600 to-purple-800 py-20">

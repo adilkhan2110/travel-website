@@ -2,9 +2,9 @@
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import WhatsAppWidget from "@/components/WhatsAppWidget";
-import useVisaDetail from "../../store/useVisaDetail";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-
+import useVisaDetail from "../../store/useVisaDetail";
 export default function VisaPage() {
   const { items, fetchItems, isFetchingItems } = useVisaDetail();
 
@@ -109,11 +109,14 @@ export default function VisaPage() {
     },
   ];
 
+  const router = useRouter();
+
+  const handleClick = (id) => {
+    router.push(`/visa/${id}`);
+  };
+
   return (
     <main>
-      <Header />
-
-      {/* Hero Section */}
       <section className="relative bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 py-24">
         <div className="absolute inset-0 bg-black/20"></div>
         <div className="container mx-auto px-4 relative z-10">
@@ -242,7 +245,10 @@ export default function VisaPage() {
                     </div>
                   </div>
 
-                  <button className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 shadow-lg hover:shadow-emerald-500/25 transform hover:-translate-y-0.5">
+                  <button
+                    onClick={() => handleClick(visa._id)}
+                    className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 shadow-lg hover:shadow-emerald-500/25 transform hover:-translate-y-0.5"
+                  >
                     Apply Now
                   </button>
                 </div>

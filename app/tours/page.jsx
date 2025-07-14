@@ -7,7 +7,7 @@ import { Modal } from "@mui/material";
 import { useEffect, useState } from "react";
 import useHolidayPackages from "../../store/useHolidayPackages";
 import FromPage from "@/components/form/form";
- 
+
 export default function ToursPage() {
   const { items, fetchItems, isFetchingItems } = useHolidayPackages();
 
@@ -26,7 +26,7 @@ export default function ToursPage() {
   };
   return (
     <main>
-      <Header />
+    
 
       {/* Hero Section */}
       <section className="relative bg-gradient-to-r from-purple-600 to-purple-800 py-20">
@@ -56,9 +56,6 @@ export default function ToursPage() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {/* {tours.map((tour) => (
-              <TourCard key={tour.id} tour={tour} />
-            ))} */}
             {items?.map((tour) => (
               <TourCard key={tour.id} tour={tour} handleOpen={handleOpen} />
             ))}
