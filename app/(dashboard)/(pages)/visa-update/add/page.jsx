@@ -1,4 +1,8 @@
-import VisaView from "../../../../../components/visa-page/visa-page";
+import dynamic from "next/dynamic";
+
+const VisaView = dynamic(() => import("../../../../../components/visa-page/visa-page"), {
+  ssr: false,
+});
 
 const Page = () => {
   return (
