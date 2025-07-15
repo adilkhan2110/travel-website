@@ -1,5 +1,4 @@
 export default function TourCard({ tour, handleOpen }) {
-  debugger;
   return (
     <div className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
       <div className="relative">

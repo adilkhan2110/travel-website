@@ -10,7 +10,8 @@ import {
   Grid,
   List,
   ListItem,
-  Typography
+  Skeleton,
+  Typography,
 } from "@mui/material";
 import { useParams } from "next/navigation";
 import { useEffect } from "react";
@@ -26,19 +27,57 @@ export default function VisaPage() {
     }
   }, [id]);
 
-  if (isFetchingItemById) return <p>Loading visa details...</p>;
-  if (!selectedItem) return <p>No visa data found.</p>;
+  if (isFetchingItemById || !selectedItem) {
+    return (
+      <Container sx={{ my: 4 }}>
+        <Skeleton variant="text" width="60%" height={50} />
+        <Box
+          display="flex"
+          flexDirection={{ xs: "column", sm: "row" }}
+          gap={4}
+          mt={2}
+        >
+          <Box flex={2}>
+            <Skeleton
+              variant="rectangular"
+              height={250}
+              sx={{ borderRadius: 2, mb: 2 }}
+            />
+            <Skeleton variant="text" width="40%" height={30} />
+            <Skeleton variant="text" width="100%" height={100} />
+            <Skeleton variant="text" width="30%" height={25} sx={{ mt: 2 }} />
+            <Skeleton variant="text" width="30%" height={25} sx={{ mt: 1 }} />
+            <Skeleton variant="text" width="50%" height={30} sx={{ mt: 4 }} />
+            {[...Array(3)].map((_, idx) => (
+              <Skeleton key={idx} variant="text" width="100%" height={20} />
+            ))}
+          </Box>
+          <Box flex={1}>
+            <Skeleton
+              variant="rectangular"
+              height={400}
+              sx={{ borderRadius: 2 }}
+            />
+          </Box>
+        </Box>
+      </Container>
+    );
+  }
 
   return (
-    <main className="view-detail">
+    <main>
       <Container sx={{ my: 4 }}>
         <Typography variant="h4" gutterBottom>
           {selectedItem.title}
         </Typography>
 
-        <Grid container spacing={4}>
-          {/* LEFT COLUMN */}
-          <Grid item xs={12} md={8}>
+        <Box
+          className="visa-page"
+          display="flex"
+          flexDirection={{ xs: "column", sm: "row" }}
+          gap={4}
+        >
+          <Box flex={2}>
             <Box
               component="img"
               src={selectedItem.image}
@@ -77,7 +116,7 @@ export default function VisaPage() {
               </>
             )}
 
-            {/* Optional Fields */}
+            {/* Highlights */}
             {selectedItem.highlights?.length > 0 && (
               <>
                 <Typography variant="h6" mt={4}>
@@ -93,6 +132,7 @@ export default function VisaPage() {
               </>
             )}
 
+            {/* Detailed Overview */}
             {selectedItem.detailedOverview && (
               <>
                 <Typography variant="h6" mt={4}>
@@ -102,6 +142,7 @@ export default function VisaPage() {
               </>
             )}
 
+            {/* Itinerary */}
             {selectedItem.itinerary?.length > 0 && (
               <>
                 <Typography variant="h6" mt={4}>
@@ -146,13 +187,12 @@ export default function VisaPage() {
                 )}
               </Grid>
             )}
-          </Grid>
+          </Box>
 
-          {/* RIGHT COLUMN */}
-          <Grid item xs={12} md={4}>
+          <Box flex={1}>
             <FromPage />
-          </Grid>
-        </Grid>
+          </Box>
+        </Box>
       </Container>
 
       <Footer />

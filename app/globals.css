@@ -279,8 +279,13 @@ th {
   margin-top: 10px;
 }
 
-.view-detail img {
+.visa-page img {
   height: 380px;
   border-radius: 10px;
   object-fit: cover;
+}
+
+.visa-page form {
+  border: none !important;
+  padding: 5px;
 }
