@@ -9,9 +9,9 @@ const AdminHeader = () => {
 
       {/* Right: Icons */}
       <div className="flex items-center justify-end space-x-4">
-        <Button variant="ghost" size="icon">
+        {/* <Button variant="ghost" size="icon">
           Logout
-        </Button>
+        </Button> */}
       </div>
     </header>
   );

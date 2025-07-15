@@ -15,7 +15,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className="antialiased">
         <SideNav />
-        <AdminHeader />
+        {/* <AdminHeader /> */}
         <main className="ml-0 md:ml-64 p-6">{children}</main>
         <ToastContainer />
       </body>

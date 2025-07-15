@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Menu, X } from "lucide-react"; // npm install lucide-react
 import clsx from "clsx"; // npm install clsx
 
@@ -37,6 +37,7 @@ export default function SideNav() {
 
 function NavLinks({ onLinkClick }) {
   const pathname = usePathname();
+  const router = useRouter();
 
   const links = [
     { href: "/add-tour-package", label: "Tour Package" },
@@ -44,6 +45,12 @@ function NavLinks({ onLinkClick }) {
     { href: "/gallery-view", label: "Gallery View" },
     { href: "/visa-update", label: "Visa Services" },
   ];
+
+  const handleLogout = () => {
+    localStorage.clear(); // Clear all localStorage (or use removeItem for specific keys)
+    if (onLinkClick) onLinkClick();
+    router.push("/login"); // Redirect to login page
+  };
 
   return (
     <nav className="flex flex-col space-y-4">
@@ -65,6 +72,14 @@ function NavLinks({ onLinkClick }) {
           </Link>
         );
       })}
+
+      {/* Logout Button */}
+      <button
+        onClick={handleLogout}
+        className="mt-4 p-2 rounded bg-red-600 hover:bg-red-700 transition-colors duration-200 text-left"
+      >
+        Logout
+      </button>
     </nav>
   );
 }

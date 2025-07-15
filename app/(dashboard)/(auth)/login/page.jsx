@@ -23,7 +23,7 @@ export default function LoginPage() {
       const data = await res.json();
       if (res.ok) {
         // alert('Login successful!');
-        router.push('/dashboard');
+        router.push('/add-tour-package');
       } else {
         alert(data.error || 'Login failed');
       }
