@@ -51,7 +51,7 @@ const FromPage = ({ handleClose }) => {
         toast.error(data.error || "Something went wrong!");
       }
     } catch (error) {
-      toast.error("Network error. Please try again later.");
+      // toast.error("Network error. Please try again later.");
     } finally {
       setIsSubmitting(false);
     }
