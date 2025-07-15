@@ -46,12 +46,11 @@ const FromPage = ({ handleClose }) => {
           subject: "",
           message: "",
         });
-        handleClose()
+        handleClose();
       } else {
         toast.error(data.error || "Something went wrong!");
       }
     } catch (error) {
-      // toast.error("Network error. Please try again later.");
     } finally {
       setIsSubmitting(false);
     }
@@ -67,7 +66,10 @@ const FromPage = ({ handleClose }) => {
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid md:grid-cols-2 gap-6">
             <div>
-              <label htmlFor="name" className="block text-gray-700 font-medium mb-2">
+              <label
+                htmlFor="name"
+                className="block text-gray-700 font-medium mb-2"
+              >
                 Full Name *
               </label>
               <input
@@ -81,7 +83,10 @@ const FromPage = ({ handleClose }) => {
               />
             </div>
             <div>
-              <label htmlFor="email" className="block text-gray-700 font-medium mb-2">
+              <label
+                htmlFor="email"
+                className="block text-gray-700 font-medium mb-2"
+              >
                 Email Address *
               </label>
               <input
@@ -98,7 +103,10 @@ const FromPage = ({ handleClose }) => {
 
           <div className="grid md:grid-cols-2 gap-6">
             <div>
-              <label htmlFor="phone" className="block text-gray-700 font-medium mb-2">
+              <label
+                htmlFor="phone"
+                className="block text-gray-700 font-medium mb-2"
+              >
                 Phone Number
               </label>
               <input
@@ -111,7 +119,10 @@ const FromPage = ({ handleClose }) => {
               />
             </div>
             <div>
-              <label htmlFor="subject" className="block text-gray-700 font-medium mb-2">
+              <label
+                htmlFor="subject"
+                className="block text-gray-700 font-medium mb-2"
+              >
                 Subject *
               </label>
               <select
@@ -132,7 +143,10 @@ const FromPage = ({ handleClose }) => {
           </div>
 
           <div>
-            <label htmlFor="message" className="block text-gray-700 font-medium mb-2">
+            <label
+              htmlFor="message"
+              className="block text-gray-700 font-medium mb-2"
+            >
               Message *
             </label>
             <textarea
@@ -151,7 +165,9 @@ const FromPage = ({ handleClose }) => {
             type="submit"
             disabled={isSubmitting}
             className={`w-full bg-purple-600 text-white font-bold py-3 px-6 rounded-lg transition-colors ${
-              isSubmitting ? "opacity-50 cursor-not-allowed" : "hover:bg-purple-700"
+              isSubmitting
+                ? "opacity-50 cursor-not-allowed"
+                : "hover:bg-purple-700"
             }`}
           >
             {isSubmitting ? "Sending..." : "Send Message"}
