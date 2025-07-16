@@ -97,8 +97,13 @@ const AddTourModal = ({ formData, handleClose, isEdit }) => {
 
   return (
     <Box
+      sx={{
+        width: 800,
+        bgcolor: "background.paper",
+        p: 4,
+        borderRadius: 2,
+      }}
       className="modal-content"
-      sx={{ width: 500, bgcolor: "background.paper", p: 4, borderRadius: 2 }}
     >
       <h4 className="modal-title">{isEdit ? "Update" : "Add"} Tour</h4>
 

@@ -6,7 +6,7 @@ import Popover from "@mui/material/Popover";
 import { useEffect, useState } from "react";
 import ReusableTable from "../../../../components/ReusableTable/ReusableTable";
 import useVisaDetail from "../../../../store/useVisaDetail";
-
+import { useRouter } from "next/navigation";
 function RowActions({ row, onDelete, onEdit }) {
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -61,6 +61,7 @@ function RowActions({ row, onDelete, onEdit }) {
 }
 
 export default function AddTourPackage() {
+  const router = useRouter();
   const {
     items,
     totalCount,
@@ -110,14 +111,16 @@ export default function AddTourPackage() {
     { id: "actions", label: "Actions", hasActions: true },
   ];
 
-  const handleOpen = () => {};
+  const handleOpen = () => {
+    router.push("/visa-update/add");
+  };
 
   return (
     <div>
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-bold">Visa List</h2>
         <Button variant="contained" className="" onClick={handleOpen}>
-          Add New Item
+          Add Item
         </Button>
       </div>
 

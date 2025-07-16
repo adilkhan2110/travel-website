@@ -2,17 +2,15 @@
 
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Button } from "@mui/material";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import * as yup from "yup";
-import useVisaDetail from "../../store/useVisaDetail";
-import RHFTagInput from "../ui/hook-form/RHFTagInput";
+import { RHFTextField } from "../../components/ui/hook-form";
 import RHFImageUpload from "../../components/ui/hook-form/rhf-image-upload";
 import RHFQuillEditor from "../../components/ui/hook-form/RHFQuillEditor";
-import { RHFTextField } from "../../components/ui/hook-form";
-
-
-
+import useVisaDetail from "../../store/useVisaDetail";
+import RHFTagInput from "../ui/hook-form/RHFTagInput";
 // ✅ Validation schema
 const schema = yup.object().shape({
   title: yup.string().required("Title is required"),
@@ -44,9 +42,9 @@ const schema = yup.object().shape({
     }),
 });
 
-const VisaView = ({ formData, handleClose, isEdit }) => {
-  const { addItem, updateItem,fetchItems } = useVisaDetail();
- 
+const VisaView = ({ formData, isEdit }) => {
+  const router = useRouter();
+  const { addItem, updateItem, fetchItems } = useVisaDetail();
 
   const methods = useForm({
     resolver: yupResolver(schema),
@@ -102,10 +100,14 @@ const VisaView = ({ formData, handleClose, isEdit }) => {
         await addItem(formDataToSend);
       }
 
-      handleClose();
+      redirectPage()
     } catch (error) {
       console.error("Form submission error:", error);
     }
+  };
+
+  const redirectPage = () => {
+    router.push("/visa-update");
   };
 
   return (
@@ -163,7 +165,7 @@ const VisaView = ({ formData, handleClose, isEdit }) => {
             <Button type="submit" variant="contained">
               {isEdit ? "Update" : "Add"}
             </Button>
-            <Button variant="outlined" sx={{ ml: 2 }} onClick={handleClose}>
+            <Button variant="outlined" sx={{ ml: 2 }} onClick={redirectPage}>
               Cancel
             </Button>
           </Box>

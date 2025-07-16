@@ -53,7 +53,7 @@ export default function Header() {
               href="/login"
               className="bg-gradient-to-r from-sky-500 to-indigo-500 hover:from-sky-600 hover:to-indigo-600 text-white font-bold py-2 px-5 rounded-full transition-all duration-300 shadow hover:shadow-md"
             >
-              LOGIN
+              LOG IN
             </Link>
           </nav>
 
@@ -113,7 +113,7 @@ export default function Header() {
                   className="block w-full text-center bg-gradient-to-r from-sky-500 to-indigo-500 text-white font-bold py-3 px-6 rounded-full transition-colors"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  LOGIN
+                  LOG IN 
                 </Link>
               </div>
             </nav>

@@ -109,7 +109,7 @@ const VisaModal = ({ formData, handleClose, isEdit }) => {
       }}
       className="modal-content"
     >
-      <h4 className="modal-title">{isEdit ? "Update" : "Add"} Visa </h4>
+      <h4 className="modal-title">{isEdit ? "Update" : "Add"} Visa</h4>
 
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit)}>
