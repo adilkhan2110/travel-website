@@ -91,7 +91,7 @@ const AddEditModal = ({ formData, handleClose, isEdit }) => {
   };
 
   return (
-    <Box
+    <Box className="modal-content"
       sx={{ width: 400, bgcolor: "background.paper", p: 4, borderRadius: 2 }}
     >
       <h4 className="modal-title"> {isEdit ? "Update" : "Add"} Gallary Iamge</h4>

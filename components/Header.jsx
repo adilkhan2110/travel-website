@@ -106,17 +106,6 @@ export default function Header() {
                 </Link>
               ))}
 
-              {/* GET QUOTE Button */}
-              <div className="px-4 py-3">
-                <Link
-                  href="/contact"
-                  className="block w-full text-center bg-gradient-to-r from-orange-500 to-pink-500 text-white font-bold py-3 px-6 rounded-full transition-colors"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  GET QUOTE
-                </Link>
-              </div>
-
               {/* LOGIN Button for Mobile */}
               <div className="px-4 py-3">
                 <Link
