@@ -45,10 +45,6 @@ const useHolidayPackages = create((set, get) => ({
       if (!response.ok) throw new Error("Failed to add item");
 
       const result = await response.json();
-      // set((state) => ({
-      //   items: [...state.items, result.data],
-      //   totalCount: state.totalCount + 1,
-      // }));
 
       toast("Image added successfully", {
         type: "success",

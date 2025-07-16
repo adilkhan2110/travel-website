@@ -1,16 +1,16 @@
 "use client";
 
+import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Button } from "@mui/material";
+import MenuItem from "@mui/material/MenuItem";
 import { FormProvider, useForm } from "react-hook-form";
+import * as yup from "yup";
 import { RHFSelect, RHFTextField } from "../../components/ui/hook-form";
 import RHFImageUpload from "../../components/ui/hook-form/rhf-image-upload";
-import MenuItem from "@mui/material/MenuItem";
+import LoadingButton from "../../components/ui/LoadingButton";
 
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-
-import { useEffect } from "react";
 import useGalleryStore from "@/store/useGalleryStore ";
+import { useEffect } from "react";
 
 // Validation schema
 const schema = yup.object().shape({
@@ -24,7 +24,8 @@ const schema = yup.object().shape({
 });
 
 const AddEditModal = ({ formData, handleClose, isEdit }) => {
-  const { addItem, updateItem } = useGalleryStore();
+  const { addItem, updateItem, isAddingItem, isUpdatingItem } =
+    useGalleryStore();
 
   const methods = useForm({
     resolver: yupResolver(schema),
@@ -91,10 +92,14 @@ const AddEditModal = ({ formData, handleClose, isEdit }) => {
   };
 
   return (
-    <Box className="modal-content"
+    <Box
+      className="modal-content"
       sx={{ width: 400, bgcolor: "background.paper", p: 4, borderRadius: 2 }}
     >
-      <h4 className="modal-title"> {isEdit ? "Update" : "Add"} Gallary Iamge</h4>
+      <h4 className="modal-title">
+        {" "}
+        {isEdit ? "Update" : "Add"} Gallary Iamge
+      </h4>
 
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -115,19 +120,10 @@ const AddEditModal = ({ formData, handleClose, isEdit }) => {
           </Box>
 
           <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-            <Button
-              type="submit"
-              variant="contained"
-              sx={{ mt: 2 }}
-              // disabled={isSubmitting}
-            >
+            <LoadingButton loading={isAddingItem || isUpdatingItem}>
               {isEdit ? "Update" : "Add"}
-            </Button>
-            <Button
-              variant="outlined"
-              sx={{ mt: 2, ml: 2 }}
-              onClick={handleClose}
-            >
+            </LoadingButton>
+            <Button variant="outlined" sx={{ ml: 2 }} onClick={handleClose}>
               Cancel
             </Button>
           </Box>

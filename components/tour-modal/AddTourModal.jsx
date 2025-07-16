@@ -4,7 +4,7 @@ import { Box, Button, Grid, MenuItem } from "@mui/material";
 import { FormProvider, useForm } from "react-hook-form";
 import { RHFTextField, RHFSelect } from "../ui/hook-form";
 import RHFImageUpload from "../ui/hook-form/rhf-image-upload";
-
+import LoadingButton from "../../components/ui/LoadingButton";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
@@ -42,7 +42,8 @@ const schema = yup.object().shape({
 });
 
 const AddTourModal = ({ formData, handleClose, isEdit }) => {
-  const { addItem, updateItem } = useTourPackages();
+  const { addItem, updateItem, isAddingItem, isUpdatingItem } =
+    useTourPackages();
 
   const methods = useForm({
     resolver: yupResolver(schema),
@@ -129,9 +130,9 @@ const AddTourModal = ({ formData, handleClose, isEdit }) => {
           </Grid>
 
           <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 3 }}>
-            <Button type="submit" variant="contained">
+            <LoadingButton loading={isAddingItem || isUpdatingItem}>
               {isEdit ? "Update" : "Add"}
-            </Button>
+            </LoadingButton>
             <Button variant="outlined" sx={{ ml: 2 }} onClick={handleClose}>
               Cancel
             </Button>

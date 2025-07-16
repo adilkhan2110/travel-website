@@ -9,6 +9,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useEffect } from "react";
 import useHolidayPackages from "../../store/useHolidayPackages";
+import LoadingButton from "../../components/ui/LoadingButton";
 
 // ✅ Validation schema
 const schema = yup.object().shape({
@@ -44,7 +45,8 @@ const schema = yup.object().shape({
 });
 
 const HolidayModal = ({ formData, handleClose, isEdit }) => {
-  const { addItem, updateItem } = useHolidayPackages();
+  const { addItem, updateItem, isAddingItem, isUpdatingItem } =
+    useHolidayPackages();
 
   const methods = useForm({
     resolver: yupResolver(schema),
@@ -154,9 +156,10 @@ const HolidayModal = ({ formData, handleClose, isEdit }) => {
           </Box>
 
           <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 3 }}>
-            <Button type="submit" variant="contained">
+            <LoadingButton loading={isAddingItem || isUpdatingItem}>
               {isEdit ? "Update" : "Add"}
-            </Button>
+            </LoadingButton>
+
             <Button variant="outlined" sx={{ ml: 2 }} onClick={handleClose}>
               Cancel
             </Button>
