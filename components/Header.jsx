@@ -17,20 +17,16 @@ export default function Header() {
   ];
 
   return (
-    <header className="bg-white shadow-lg   z-50 sticky top-0 transition-all duration-300">
+    <header className="bg-white shadow-lg z-50 sticky top-0 transition-all duration-300">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-3">
             <div>
-              {/* <div className="text-2xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
-                Arisha
-              </div>
-              <div className="text-xs text-gray-500 font-medium tracking-wider">TOURS & TRAVELS</div> */}
               <img
                 src={"/images/logo.png"}
                 alt="Arisha Tours & Travels Logo"
-                className="w-full h-20 object-cover   transition-transform duration-700"
+                className="w-full h-20 object-cover transition-transform duration-700"
               />
             </div>
           </Link>
@@ -51,12 +47,14 @@ export default function Header() {
                 )}
               </Link>
             ))}
-            {/* <Link
-              href="/contact"
-              className="bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white font-bold py-3 px-6 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+
+            {/* LOGIN Button */}
+            <Link
+              href="/login"
+              className="bg-gradient-to-r from-sky-500 to-indigo-500 hover:from-sky-600 hover:to-indigo-600 text-white font-bold py-2 px-5 rounded-full transition-all duration-300 shadow hover:shadow-md"
             >
-              GET QUOTE
-            </Link> */}
+              LOGIN
+            </Link>
           </nav>
 
           {/* Mobile Menu Button */}
@@ -107,6 +105,8 @@ export default function Header() {
                   {item.name}
                 </Link>
               ))}
+
+              {/* GET QUOTE Button */}
               <div className="px-4 py-3">
                 <Link
                   href="/contact"
@@ -114,6 +114,17 @@ export default function Header() {
                   onClick={() => setIsMenuOpen(false)}
                 >
                   GET QUOTE
+                </Link>
+              </div>
+
+              {/* LOGIN Button for Mobile */}
+              <div className="px-4 py-3">
+                <Link
+                  href="/login"
+                  className="block w-full text-center bg-gradient-to-r from-sky-500 to-indigo-500 text-white font-bold py-3 px-6 rounded-full transition-colors"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  LOGIN
                 </Link>
               </div>
             </nav>
