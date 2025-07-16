@@ -1,3 +1,7 @@
+// app/layout.js or app/layout.tsx
+import Header from "@/components/Header";
+import "./globals.css";
+
 export const metadata = {
   title: "Arisha Tours and Travels - Your Gateway to Amazing Destinations",
   description:
@@ -11,11 +15,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className="antialiased">
-        <Header /> {children}
+        <Header />
+        {children}
       </body>
     </html>
   );
 }
-
-import Header from "@/components/Header";
-import "./globals.css";
