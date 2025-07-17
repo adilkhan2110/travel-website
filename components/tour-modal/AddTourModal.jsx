@@ -68,7 +68,7 @@ const AddTourModal = ({ formData, handleClose, isEdit }) => {
         days: formData.days || "",
         category: formData.category || "",
         bannerImage: formData.bannerImage
-          ? [`http://localhost:3000${formData.bannerImage}`]
+          ? [`${formData.bannerImage}`]
           : [],
       });
     }

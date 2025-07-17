@@ -1,8 +1,10 @@
 import { NextResponse } from "next/server";
 import { connectToDB } from "../../../lib/db";
 import TourPackage from "../../../models/TourPackage";
+import cloudinary from "../../../../lib/cloudinary";
 export const runtime = "nodejs";
 
+// GET one TourPackage
 export async function GET(_, { params }) {
   await connectToDB();
   const tour = await TourPackage.findById(params.id);
@@ -12,10 +14,10 @@ export async function GET(_, { params }) {
   return NextResponse.json({ data: tour });
 }
 
+// UPDATE TourPackage
 export async function PUT(req, { params }) {
   const { id } = params;
-
-  const formData = await req.formData(); // ✅ instead of req.json()
+  const formData = await req.formData();
 
   const title = formData.get("title");
   const priceINR = Number(formData.get("priceINR"));
@@ -28,10 +30,15 @@ export async function PUT(req, { params }) {
   if (image && typeof image !== "string") {
     const bytes = await image.arrayBuffer();
     const buffer = Buffer.from(bytes);
-    const fileName = `${Date.now()}_${image.name}`;
-    const uploadPath = path.join(process.cwd(), "public/uploads", fileName);
-    fs.writeFileSync(uploadPath, buffer);
-    bannerImagePath = `/uploads/${fileName}`;
+    const base64 = buffer.toString("base64");
+    const dataURI = `data:${image.type};base64,${base64}`;
+
+    const uploadRes = await cloudinary.uploader.upload(dataURI, {
+      folder: "tour-packages",
+      public_id: `${Date.now()}_${image.name}`,
+    });
+
+    bannerImagePath = uploadRes.secure_url;
   }
 
   await connectToDB();
@@ -51,6 +58,7 @@ export async function PUT(req, { params }) {
   return NextResponse.json({ success: true, data: updatedPackage });
 }
 
+// DELETE TourPackage
 export async function DELETE(_, { params }) {
   await connectToDB();
   await TourPackage.findByIdAndDelete(params.id);

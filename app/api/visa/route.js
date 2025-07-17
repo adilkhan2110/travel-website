@@ -1,8 +1,7 @@
 import { NextResponse } from "next/server";
-import fs from "fs";
-import path from "path";
 import { connectToDB } from "../../lib/db";
 import VisaPackage from "../../models/VisaPackage";
+import cloudinary from "../../../lib/cloudinary";
 
 export async function POST(req) {
   try {
@@ -17,7 +16,7 @@ export async function POST(req) {
     const image = formData.get("image");
     const days = formData.get("days");
 
-    const requirements = JSON.parse(requirementsRaw); // frontend sends JSON string
+    const requirements = JSON.parse(requirementsRaw || "[]");
 
     if (!image || typeof image === "string") {
       return NextResponse.json(
@@ -26,15 +25,16 @@ export async function POST(req) {
       );
     }
 
+    // Convert to base64 and upload to Cloudinary
     const bytes = await image.arrayBuffer();
     const buffer = Buffer.from(bytes);
-    const fileName = `${Date.now()}_${image.name}`;
-    const uploadDir = path.join(process.cwd(), "public/uploads");
+    const base64 = buffer.toString("base64");
+    const dataURI = `data:${image.type};base64,${base64}`;
 
-    if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
-
-    const uploadPath = path.join(uploadDir, fileName);
-    fs.writeFileSync(uploadPath, buffer);
+    const uploadRes = await cloudinary.uploader.upload(dataURI, {
+      folder: "visa-packages",
+      public_id: `${Date.now()}_${image.name}`,
+    });
 
     await connectToDB();
 
@@ -46,7 +46,7 @@ export async function POST(req) {
       validity,
       requirements,
       days,
-      image: `/uploads/${fileName}`,
+      image: uploadRes.secure_url, // ✅ Cloudinary URL
     });
 
     await newVisa.save();

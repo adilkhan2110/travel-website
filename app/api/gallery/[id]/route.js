@@ -1,11 +1,9 @@
 import { NextResponse } from "next/server";
-export const runtime = "nodejs";
-
-
-import fs from "fs";
-import path from "path";
 import { connectToDB } from "../../../lib/db";
 import GalleryItem from "../../../models/GalleryItem";
+import cloudinary from "../../../../lib/cloudinary";
+
+export const runtime = "nodejs";
 
 export async function GET(_, { params }) {
   await connectToDB();
@@ -27,10 +25,17 @@ export async function PUT(req, { params }) {
   if (image && typeof image !== "string") {
     const bytes = await image.arrayBuffer();
     const buffer = Buffer.from(bytes);
-    const fileName = `${Date.now()}_${image.name}`;
-    const uploadPath = path.join(process.cwd(), "public/uploads", fileName);
-    fs.writeFileSync(uploadPath, buffer);
-    updatedFields.image = `/uploads/${fileName}`;
+
+    // Convert to base64 for Cloudinary upload
+    const base64Image = buffer.toString("base64");
+    const dataURI = `data:${image.type};base64,${base64Image}`;
+
+    const uploadRes = await cloudinary.uploader.upload(dataURI, {
+      folder: "gallery",
+      public_id: `${Date.now()}_${image.name}`,
+    });
+
+    updatedFields.image = uploadRes.secure_url;
   }
 
   const updatedItem = await GalleryItem.findByIdAndUpdate(
@@ -53,10 +58,14 @@ export async function DELETE(req, { params }) {
       return NextResponse.json({ error: "Item not found" }, { status: 404 });
     }
 
-    // Optionally delete image file
-    const imagePath = path.join(process.cwd(), "public", item.image);
-    if (fs.existsSync(imagePath)) {
-      fs.unlinkSync(imagePath);
+    // Optionally delete from Cloudinary if stored
+    if (item.image?.includes("res.cloudinary.com")) {
+      const publicId = item.image
+        .split("/")
+        .slice(-1)[0]
+        .split(".")[0];
+
+      await cloudinary.uploader.destroy(`gallery/${publicId}`);
     }
 
     await GalleryItem.findByIdAndDelete(id);

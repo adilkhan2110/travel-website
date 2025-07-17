@@ -61,7 +61,7 @@ const AddEditModal = ({ formData, handleClose, isEdit }) => {
         title: formData?.title || "",
         category: formData?.category || "",
         image: formData?.image
-          ? [`http://localhost:3000${formData.image}`]
+          ? [`${formData.image}`]
           : [],
       });
     }

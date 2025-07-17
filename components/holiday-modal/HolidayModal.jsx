@@ -72,7 +72,7 @@ const HolidayModal = ({ formData, handleClose, isEdit }) => {
         nights: formData.nights || "",
         days: formData.days || "",
         includes: formData.includes || [],
-        image: formData.image ? [`http://localhost:3000${formData.image}`] : [],
+        image: formData.image ? [`${formData.image}`] : [],
       });
     }
   }, [isEdit, formData, reset]);

@@ -72,7 +72,7 @@ const VisaView = ({ formData, isEdit }) => {
         validity: formData.validity || "",
         days: formData.days || "",
         requirements: formData.requirements || [],
-        image: formData.image ? [`http://localhost:3000${formData.image}`] : [],
+        image: formData.image ? [`${formData.image}`] : [],
       });
     }
   }, [isEdit, formData, reset]);

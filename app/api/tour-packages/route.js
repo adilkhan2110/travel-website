@@ -1,8 +1,7 @@
 import { NextResponse } from "next/server";
 import TourPackage from "../../models/TourPackage";
-import fs from "fs";
-import path from "path";
 import { connectToDB } from "../../lib/db";
+import cloudinary from "../../../lib/cloudinary"; 
 
 export async function POST(req) {
   const formData = await req.formData();
@@ -17,21 +16,28 @@ export async function POST(req) {
     return NextResponse.json({ error: "Image upload failed" }, { status: 400 });
   }
 
+  // Convert image to base64
   const bytes = await image.arrayBuffer();
   const buffer = Buffer.from(bytes);
-  const fileName = `${Date.now()}_${image.name}`;
-  const uploadPath = path.join(process.cwd(), "public/uploads", fileName);
+  const base64 = buffer.toString("base64");
+  const dataURI = `data:${image.type};base64,${base64}`;
 
-  fs.writeFileSync(uploadPath, buffer);
+  // Upload to Cloudinary
+  const uploadRes = await cloudinary.uploader.upload(dataURI, {
+    folder: "tour-packages",
+    public_id: `${Date.now()}_${image.name}`,
+  });
 
   await connectToDB();
+
   const newPackage = new TourPackage({
     title,
     priceINR,
     nights,
     days,
-    bannerImage: `/uploads/${fileName}`,
+    bannerImage: uploadRes.secure_url, // Use Cloudinary URL instead of local path
   });
+
   await newPackage.save();
 
   return NextResponse.json(
@@ -39,35 +45,6 @@ export async function POST(req) {
     { status: 201 }
   );
 }
-
-// export async function GET(req) {
-//   await connectToDB();
-
-//   const { searchParams } = new URL(req.url);
-//   const page = Math.max(1, parseInt(searchParams.get("page") || "1"));
-//   const limit = parseInt(searchParams.get("limit") || "10");
-//   const search = searchParams.get("search") || "";
-
-//   const query = search ? { title: { $regex: search, $options: "i" } } : {};
-
-//   const total = await TourPackage.countDocuments(query);
-//   const packages = await TourPackage.find(query)
-//     .skip((page - 1) * limit)
-//     .limit(limit)
-//     .sort({ createdAt: -1 });
-
-//   return NextResponse.json(
-//     {
-//       data: packages,
-//       pagination: {
-//         total,
-//         page,
-//         pages: Math.ceil(total / limit),
-//       },
-//     },
-//     { status: 200 }
-//   );
-// }
 
 export async function GET(req) {
   await connectToDB();
@@ -101,4 +78,3 @@ export async function GET(req) {
     totalCount,
   });
 }
-
