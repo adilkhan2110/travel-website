@@ -4,6 +4,7 @@ import Holiday from "../../../models/Holiday";
 
 import { writeFile } from "fs/promises";
 import path from "path";
+export const runtime = "nodejs";
 // GET one
 export async function GET(req, { params }) {
   try {

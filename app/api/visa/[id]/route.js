@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import VisaPackage from "../../../models/VisaPackage";
 import { connectToDB } from "../../../lib/db";
 
+export const runtime = "nodejs";
+
 export async function GET(req, { params }) {
   await connectToDB();
   const visa = await VisaPackage.findById(params.id);

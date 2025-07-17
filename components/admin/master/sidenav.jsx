@@ -1,10 +1,10 @@
 "use client"; // If using Next.js 13+ with app directory
 
-import { useState } from "react";
+import clsx from "clsx"; // npm install clsx
+import { Menu, X } from "lucide-react"; // npm install lucide-react
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Menu, X } from "lucide-react"; // npm install lucide-react
-import clsx from "clsx"; // npm install clsx
+import { useState } from "react";
 
 export default function SideNav() {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,7 +13,7 @@ export default function SideNav() {
     <>
       {/* Mobile Navbar */}
       <div className="md:hidden bg-gray-900 text-white flex items-center justify-between p-4">
-        <div className="text-xl font-bold">Arisha Travels</div>
+        <div className="text-xl font-bold">Arisha Travels test</div>
         <button onClick={() => setIsOpen(!isOpen)} aria-label="Toggle Menu">
           {isOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
@@ -21,7 +21,7 @@ export default function SideNav() {
 
       {/* Sidebar for desktop */}
       <aside className="hidden md:flex w-64 h-screen bg-gray-900 text-white fixed top-0 left-0 flex-col p-4">
-        <div className="text-2xl font-bold mb-8">Arisha Travels</div>
+        <div className="text-2xl font-bold mb-8">Arisha Travels test</div>
         <NavLinks />
       </aside>
 

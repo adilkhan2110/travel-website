@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { connectToDB } from "../../../lib/db";
 import TourPackage from "../../../models/TourPackage";
-
+export const runtime = "nodejs";
 
 export async function GET(_, { params }) {
   await connectToDB();
