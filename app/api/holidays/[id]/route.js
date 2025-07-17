@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
 import { connectToDB } from "../../../lib/db";
 import Holiday from "../../../models/Holiday";
+import cloudinary from "../../../../lib/cloudinary";  
 
-import { writeFile } from "fs/promises";
-import path from "path";
 export const runtime = "nodejs";
+
 // GET one
 export async function GET(req, { params }) {
   try {
@@ -36,12 +36,18 @@ export async function PUT(req, { params }) {
 
     const image = form.get("image");
 
-    if (image && image.arrayBuffer) {
-      const buffer = Buffer.from(await image.arrayBuffer());
-      const filename = Date.now() + "-" + image.name;
-      const filepath = path.join("public/uploads", filename);
-      await writeFile(filepath, buffer);
-      data.image = `/uploads/${filename}`;
+    if (image && typeof image !== "string") {
+      const bytes = await image.arrayBuffer();
+      const buffer = Buffer.from(bytes);
+      const base64 = buffer.toString("base64");
+      const dataUri = `data:${image.type};base64,${base64}`;
+
+      const uploadRes = await cloudinary.uploader.upload(dataUri, {
+        folder: "holidays",
+        public_id: `${Date.now()}_${image.name}`,
+      });
+
+      data.image = uploadRes.secure_url; // ✅ Save Cloudinary image URL
     }
 
     const updated = await Holiday.findByIdAndUpdate(params.id, data, {
@@ -50,8 +56,10 @@ export async function PUT(req, { params }) {
 
     if (!updated)
       return NextResponse.json({ error: "Update failed" }, { status: 404 });
+
     return NextResponse.json(updated);
   } catch (err) {
+    console.error("Update error:", err);
     return NextResponse.json(
       { error: "Something went wrong" },
       { status: 500 }

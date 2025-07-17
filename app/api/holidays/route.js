@@ -1,10 +1,7 @@
 import { NextResponse } from "next/server";
- 
 import { connectToDB } from "../../lib/db";
-
-import fs from "fs";
-import path from "path";
 import Holiday from "../../models/Holiday";
+import cloudinary from "../../../lib/cloudinary"; // ✅ make sure this file is correctly set up
 
 export async function POST(req) {
   try {
@@ -22,17 +19,16 @@ export async function POST(req) {
       return NextResponse.json({ error: "Invalid image" }, { status: 400 });
     }
 
+    // ⬇️ Upload to Cloudinary
     const bytes = await image.arrayBuffer();
     const buffer = Buffer.from(bytes);
-    const uploadsDir = path.join(process.cwd(), "public", "uploads");
+    const base64 = buffer.toString("base64");
+    const dataUri = `data:${image.type};base64,${base64}`;
 
-    if (!fs.existsSync(uploadsDir)) {
-      fs.mkdirSync(uploadsDir, { recursive: true });
-    }
-
-    const imageName = `${Date.now()}_${image.name}`;
-    const imagePath = path.join(uploadsDir, imageName);
-    fs.writeFileSync(imagePath, buffer);
+    const uploadRes = await cloudinary.uploader.upload(dataUri, {
+      folder: "holidays",
+      public_id: `${Date.now()}_${image.name}`,
+    });
 
     await connectToDB();
 
@@ -43,18 +39,22 @@ export async function POST(req) {
       nights,
       days,
       includes,
-      image: `/uploads/${imageName}`,
+      image: uploadRes.secure_url, // ✅ Save Cloudinary URL
     });
 
     await newHoliday.save();
 
-    return NextResponse.json({ message: "Holiday created successfully" }, { status: 201 });
+    return NextResponse.json(
+      { message: "Holiday created successfully" },
+      { status: 201 }
+    );
   } catch (err) {
     console.error("Holiday creation failed:", err);
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }
 
+// 👇 GET method untouched
 export async function GET(req) {
   try {
     await connectToDB();
@@ -90,5 +90,3 @@ export async function GET(req) {
     return NextResponse.json({ error: "Failed to fetch" }, { status: 500 });
   }
 }
-
-
