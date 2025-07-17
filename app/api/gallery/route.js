@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import path from "path";
 import { connectToDB } from "../../lib/db";
 import GalleryItem from "../../models/GalleryItem";
+import cloudinary from "../../../lib/cloudinary";
 
 export async function GET(req) {
   await connectToDB();
@@ -41,14 +42,16 @@ export async function POST(req) {
 
     const bytes = await image.arrayBuffer();
     const buffer = Buffer.from(bytes);
-    const fileName = `${Date.now()}_${image.name}`;
-    const uploadDir = path.join(process.cwd(), "public/uploads");
 
-    if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
+    // Upload to Cloudinary
+    const uploaded = await new Promise((resolve, reject) => {
+      cloudinary.uploader.upload_stream({ folder: "gallery" }, (error, result) => {
+        if (error) reject(error);
+        else resolve(result);
+      }).end(buffer);
+    });
 
-    const uploadPath = path.join(uploadDir, fileName);
-    fs.writeFileSync(uploadPath, buffer);
-    const imageUrl = `/uploads/${fileName}`;
+    const imageUrl = uploaded.secure_url;
 
     await connectToDB();
     const newItem = new GalleryItem({ title, category, image: imageUrl });
