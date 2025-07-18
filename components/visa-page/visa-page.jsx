@@ -167,7 +167,7 @@ const VisaView = () => {
               type="number"
               label="Tour Duration (days)"
             />
-            <Box sx={{ width: "48%", mb: 4 }}>
+            <Box sx={{ width: { xs: "100%", sm: "48%" }, mb: 4 }}>
               <RHFTagInput
                 name="requirements"
                 label="Requirements (comma separated)"
