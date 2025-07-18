@@ -142,18 +142,7 @@ export default function AddTourPackage() {
               row={row}
               onDelete={deleteItem}
               onEdit={(row) => {
-                setSelectedItem(row);
-                setFormData({
-                  title: row.title || "",
-                  price: row.price || "",
-                  country: row.country || "",
-                  nights: row.nights || "",
-                  days: row.days || "",
-                  includes: row.includes || [],
-                  image: row.image || "",
-                  _id: row._id,
-                });
-                setOpen(true);
+                router.push(`/visa-update/${row._id}`);
               }}
             />
           )}

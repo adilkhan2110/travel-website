@@ -2,7 +2,7 @@
 
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Button } from "@mui/material";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -11,6 +11,7 @@ import RHFImageUpload from "../../components/ui/hook-form/rhf-image-upload";
 import RHFQuillEditor from "../../components/ui/hook-form/RHFQuillEditor";
 import useVisaDetail from "../../store/useVisaDetail";
 import RHFTagInput from "../ui/hook-form/RHFTagInput";
+import LoadingButton from "../../components/ui/LoadingButton";
 // ✅ Validation schema
 const schema = yup.object().shape({
   title: yup.string().required("Title is required"),
@@ -42,9 +43,24 @@ const schema = yup.object().shape({
     }),
 });
 
-const VisaView = ({ formData, isEdit }) => {
+const VisaView = () => {
+  const { id } = useParams();
+
   const router = useRouter();
-  const { addItem, updateItem, fetchItems } = useVisaDetail();
+  const {
+    addItem,
+    updateItem,
+    getItemById,
+    selectedItem,
+    isUpdatingItem,
+    isAddingItem,
+  } = useVisaDetail();
+
+  useEffect(() => {
+    if (id) {
+      getItemById(id);
+    }
+  }, [id]);
 
   const methods = useForm({
     resolver: yupResolver(schema),
@@ -63,19 +79,19 @@ const VisaView = ({ formData, isEdit }) => {
   const { handleSubmit, reset } = methods;
 
   useEffect(() => {
-    if (isEdit && formData) {
+    if (selectedItem) {
       reset({
-        title: formData.title || "",
-        priceINR: formData.priceINR || "",
-        description: formData.description || "",
-        processing: formData.processing || "",
-        validity: formData.validity || "",
-        days: formData.days || "",
-        requirements: formData.requirements || [],
-        image: formData.image ? [`${formData.image}`] : [],
+        title: selectedItem?.title || "",
+        priceINR: selectedItem?.priceINR || "",
+        description: selectedItem?.description || "",
+        processing: selectedItem?.processing || "",
+        validity: selectedItem?.validity || "",
+        days: selectedItem?.days || "",
+        requirements: selectedItem?.requirements || [],
+        image: selectedItem?.image ? [`${selectedItem?.image}`] : [],
       });
     }
-  }, [isEdit, formData, reset]);
+  }, [selectedItem, reset]);
 
   const onSubmit = async (data) => {
     try {
@@ -94,13 +110,13 @@ const VisaView = ({ formData, isEdit }) => {
         }
       });
 
-      if (isEdit) {
-        await updateItem(formData._id, formDataToSend);
+      if (selectedItem._id) {
+        await updateItem(selectedItem._id, formDataToSend);
       } else {
         await addItem(formDataToSend);
       }
 
-      redirectPage()
+      redirectPage();
     } catch (error) {
       console.error("Form submission error:", error);
     }
@@ -119,7 +135,9 @@ const VisaView = ({ formData, isEdit }) => {
       }}
       className="page-content"
     >
-      <h4 className="modal-title">{isEdit ? "Update" : "Add"} Visa</h4>
+      <h4 className="modal-title">
+        {selectedItem?._id ? "Update" : "Add"} Visa
+      </h4>
 
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -162,9 +180,10 @@ const VisaView = ({ formData, isEdit }) => {
           </Box>
 
           <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 3 }}>
-            <Button type="submit" variant="contained">
-              {isEdit ? "Update" : "Add"}
-            </Button>
+            <LoadingButton loading={isAddingItem || isUpdatingItem}>
+              {selectedItem ? "Update" : "Add"}
+            </LoadingButton>
+
             <Button variant="outlined" sx={{ ml: 2 }} onClick={redirectPage}>
               Cancel
             </Button>

@@ -1,7 +1,7 @@
-"use client"; // If using Next.js 13+ with app directory
+"use client";  
 
-import clsx from "clsx"; // npm install clsx
-import { Menu, X } from "lucide-react"; // npm install lucide-react
+import clsx from "clsx";
+import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
