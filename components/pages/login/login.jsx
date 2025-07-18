@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
+import LoadingButton from "@/components/ui/LoadingButton";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -52,7 +53,9 @@ export default function LoginPage() {
   if (checkingAuth) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 to-indigo-200">
-        <p className="text-indigo-700 text-lg font-semibold">Checking authentication...</p>
+        <p className="text-indigo-700 text-lg font-semibold">
+          Checking authentication...
+        </p>
       </div>
     );
   }
@@ -91,13 +94,7 @@ export default function LoginPage() {
               />
             </div>
 
-            <button
-              type="submit"
-              className="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition duration-300"
-              disabled={loading}
-            >
-              {loading ? "Logging in..." : "Login"}
-            </button>
+            <LoadingButton loading={loading}>Login</LoadingButton>
           </form>
         </div>
       </div>
