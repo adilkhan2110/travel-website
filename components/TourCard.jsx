@@ -3,10 +3,7 @@ export default function TourCard({ tour, handleOpen }) {
     <div className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
       <div className="relative">
         <img
-          src={
-            `${tour.image}` ||
-            "/placeholder.svg"
-          }
+          src={`${tour.image}` || "/placeholder.svg"}
           alt={tour.title}
           className="w-full h-48 object-cover"
         />
@@ -18,7 +15,7 @@ export default function TourCard({ tour, handleOpen }) {
       <div className="p-6">
         <h3 className="text-xl font-bold text-gray-800 mb-2">{tour.title}</h3>
         <p className="text-gray-600 mb-4">
-          {tour.country} • {tour.duration}
+          {tour.country} Days {tour.days} & Nights {tour.nights}
         </p>
 
         <div className="mb-4">
