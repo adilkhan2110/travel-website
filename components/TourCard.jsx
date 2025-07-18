@@ -4,7 +4,7 @@ export default function TourCard({ tour, handleOpen }) {
       <div className="relative">
         <img
           src={
-            `${process.env.NEXT_PUBLIC_API_URL}${tour.image}` ||
+            `${tour.image}` ||
             "/placeholder.svg"
           }
           alt={tour.title}

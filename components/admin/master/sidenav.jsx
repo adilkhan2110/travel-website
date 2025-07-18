@@ -1,11 +1,11 @@
-"use client";  
+"use client";
 
 import clsx from "clsx";
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
-
+import { toast } from "react-toastify";
 export default function SideNav() {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -47,9 +47,12 @@ function NavLinks({ onLinkClick }) {
   ];
 
   const handleLogout = () => {
-    localStorage.clear(); // Clear all localStorage (or use removeItem for specific keys)
+    localStorage.clear();
     if (onLinkClick) onLinkClick();
-    router.push("/login"); // Redirect to login page
+    router.push("/login");
+    toast("Image updated successfully", {
+      type: "success",
+    });
   };
 
   return (

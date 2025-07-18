@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -22,7 +23,9 @@ export default function LoginPage() {
 
       const data = await res.json();
       if (res.ok) {
-        // alert('Login successful!');
+       toast("Image updated successfully", {
+        type: "success",
+      });
         router.push("/add-tour-package");
       } else {
         alert(data.error || "Login failed");

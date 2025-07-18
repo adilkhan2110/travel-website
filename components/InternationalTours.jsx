@@ -45,9 +45,7 @@ export default function InternationalTours() {
             >
               <div className="relative overflow-hidden">
                 <img
-                  src={`${process.env.NEXT_PUBLIC_API_URL}${
-                    tour.bannerImage || "/placeholder.svg"
-                  }`}
+                  src={`${tour.bannerImage || "/placeholder.svg"}`}
                   alt={tour.title}
                   className="w-full h-56 object-cover group-hover:scale-110 transition-transform duration-700"
                 />
@@ -97,7 +95,7 @@ export default function InternationalTours() {
           }}
           className="modal-box"
         >
-          <FromPage handleClose={handleClose}  />
+          <FromPage handleClose={handleClose} />
         </div>
       </Modal>
     </section>
