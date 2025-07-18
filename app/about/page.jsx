@@ -45,7 +45,7 @@ export default function AboutPage() {
               </p>
             </div>
             <div>
-              <img src="/placeholder.svg?height=400&width=600" alt="Our team" className="rounded-lg shadow-lg w-full" />
+              <img src="/images/about-img.jpeg?height=400&width=600" alt="Our team" className="rounded-lg shadow-lg w-full" />
             </div>
           </div>
         </div>

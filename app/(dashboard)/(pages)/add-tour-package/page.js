@@ -94,7 +94,7 @@ export default function AddTourPackage() {
 
   const columns = [
     {
-      id: "bannerImage",
+      id: "Image",
       label: "bannerImage",
       renderCell: (row) => (
         <img
