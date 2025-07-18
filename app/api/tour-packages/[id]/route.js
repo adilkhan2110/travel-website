@@ -16,6 +16,9 @@ export async function GET(_, { params }) {
 
 // UPDATE TourPackage
 export async function PUT(req, { params }) {
+
+    await connectToDB();
+
   const { id } = params;
   const formData = await req.formData();
 
@@ -41,7 +44,7 @@ export async function PUT(req, { params }) {
     bannerImagePath = uploadRes.secure_url;
   }
 
-  await connectToDB();
+
 
   const updatedPackage = await TourPackage.findByIdAndUpdate(
     id,

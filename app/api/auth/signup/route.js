@@ -7,7 +7,8 @@ import User from "../../../models/User";
 
 export async function POST(req) {
   try {
-    console.log("API called");
+    await connectToDB();
+
     const body = await req.json();
     console.log("Body parsed:", body);
 
@@ -15,7 +16,6 @@ export async function POST(req) {
     console.log("Email:", email, "Password length:", password?.length);
 
     console.log("Connecting to DB...");
-    await connectToDB();
     console.log("DB connected");
 
     console.log("Checking user exists...");

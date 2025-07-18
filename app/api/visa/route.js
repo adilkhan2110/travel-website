@@ -5,6 +5,9 @@ import cloudinary from "../../../lib/cloudinary";
 
 export async function POST(req) {
   try {
+
+      await connectToDB();
+
     const formData = await req.formData();
 
     const title = formData.get("title");
@@ -36,7 +39,7 @@ export async function POST(req) {
       public_id: `${Date.now()}_${image.name}`,
     });
 
-    await connectToDB();
+  
 
     const newVisa = new VisaPackage({
       title,

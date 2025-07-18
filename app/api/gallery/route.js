@@ -30,6 +30,9 @@ export async function GET(req) {
 
 export async function POST(req) {
   try {
+    await connectToDB();
+
+
     const formData = await req.formData();
     const title = formData.get("title");
     const category = formData.get("category");
@@ -52,7 +55,7 @@ export async function POST(req) {
 
     const imageUrl = uploaded.secure_url;
 
-    await connectToDB();
+
     const newItem = new GalleryItem({ title, category, image: imageUrl });
     await newItem.save();
 

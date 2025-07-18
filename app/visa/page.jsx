@@ -197,7 +197,7 @@ export default function VisaPage() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   <div className="absolute top-4 right-4 bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-3 py-1 rounded-full text-sm font-bold">
-                    {visa.price}
+                    ₹ {visa.priceINR}
                   </div>
                 </div>
 

@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
 import TourPackage from "../../models/TourPackage";
 import { connectToDB } from "../../lib/db";
-import cloudinary from "../../../lib/cloudinary"; 
+import cloudinary from "../../../lib/cloudinary";
 
 export async function POST(req) {
+  await connectToDB();
   const formData = await req.formData();
 
   const title = formData.get("title");
@@ -27,8 +28,6 @@ export async function POST(req) {
     folder: "tour-packages",
     public_id: `${Date.now()}_${image.name}`,
   });
-
-  await connectToDB();
 
   const newPackage = new TourPackage({
     title,

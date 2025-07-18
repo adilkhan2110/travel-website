@@ -4,6 +4,7 @@ import Holiday from "../../models/Holiday";
 import cloudinary from "../../../lib/cloudinary"; // ✅ make sure this file is correctly set up
 
 export async function POST(req) {
+   await connectToDB();
   try {
     const formData = await req.formData();
 
@@ -30,7 +31,7 @@ export async function POST(req) {
       public_id: `${Date.now()}_${image.name}`,
     });
 
-    await connectToDB();
+   
 
     const newHoliday = new Holiday({
       title,
