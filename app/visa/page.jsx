@@ -1,6 +1,5 @@
 "use client";
 import Footer from "@/components/Footer";
-import Header from "@/components/Header";
 import WhatsAppWidget from "@/components/WhatsAppWidget";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -11,18 +10,7 @@ export default function VisaPage() {
   useEffect(() => {
     fetchItems("", "", true);
   }, [fetchItems]);
-  const visaServices = [
-    {
-      country: "Dubai Visa",
-      image: "/images/dubai.jpg",
-      processing: "3-5 Days",
-      validity: "30 Days",
-      price: "₹2,500",
-      requirements: ["Passport", "Photo", "Bank Statement", "Hotel Booking"],
-      description:
-        "Tourist visa for Dubai with quick processing and high approval rate.",
-    },
-  ];
+   
 
   const visaTypes = [
     {
