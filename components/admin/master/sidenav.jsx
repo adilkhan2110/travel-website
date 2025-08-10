@@ -44,6 +44,7 @@ function NavLinks({ onLinkClick }) {
     { href: "/holiday", label: "Holiday" },
     { href: "/gallery-view", label: "Gallery View" },
     { href: "/visa-update", label: "Visa Services" },
+    { href: "/banner-image", label: "Banner image" },
   ];
 
   const handleLogout = () => {
