@@ -243,6 +243,20 @@ th {
   }
 }
 
+.modal-main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 20px; /* chhoti screen ke liye thoda breathing space */
+  box-sizing: border-box;
+  overflow: auto;
+}
+
+.modal-box {
+  margin: auto !important;
+}
+
 .modal-box .MuiPaper-root {
   background: #ffffff;
   width: max-content;

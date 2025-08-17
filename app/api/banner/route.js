@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
- 
+ import Banner from "../../models/header-banner";
 import cloudinary from "../../../lib/cloudinary";
 import { connectToDB } from "../../lib/db";
-import GalleryItem from "../../models/GalleryItem";
+ 
 
 export async function GET(req) {
   await connectToDB();
@@ -11,7 +11,7 @@ export async function GET(req) {
   const getAll = searchParams.get("all") === "true";
 
   if (getAll) {
-    const items = await GalleryItem.find().sort({ createdAt: -1 });
+    const items = await Banner.find().sort({ createdAt: -1 });
     return NextResponse.json({ data: items, totalCount: items.length });
   }
 
@@ -20,22 +20,20 @@ export async function GET(req) {
   const skip = page * limit;
 
   const [items, totalCount] = await Promise.all([
-    GalleryItem.find().sort({ createdAt: -1 }).skip(skip).limit(limit),
-    GalleryItem.countDocuments(),
+    Banner.find().sort({ createdAt: -1 }).skip(skip).limit(limit),
+    Banner.countDocuments(),
   ]);
 
   return NextResponse.json({ data: items, totalCount });
 }
 
-
 export async function POST(req) {
   try {
     await connectToDB();
 
-
     const formData = await req.formData();
     const title = formData.get("title");
-    const category = formData.get("category");
+    const description = formData.get("description"); // 👈 category ki jagah description
     const image = formData.get("image");
 
     if (!image || typeof image === "string") {
@@ -47,21 +45,23 @@ export async function POST(req) {
 
     // Upload to Cloudinary
     const uploaded = await new Promise((resolve, reject) => {
-      cloudinary.uploader.upload_stream({ folder: "gallery" }, (error, result) => {
-        if (error) reject(error);
-        else resolve(result);
-      }).end(buffer);
+      cloudinary.uploader
+        .upload_stream({ folder: "banner" }, (error, result) => {
+          if (error) reject(error);
+          else resolve(result);
+        })
+        .end(buffer);
     });
 
     const imageUrl = uploaded.secure_url;
 
-
-    const newItem = new GalleryItem({ title, category, image: imageUrl });
+    // Save to MongoDB
+    const newItem = new Banner({ title, description, image: imageUrl });
     await newItem.save();
 
     return NextResponse.json({ success: true, data: newItem }, { status: 201 });
   } catch (err) {
-    console.error(err);
+    console.error("❌ POST /api/banner error:", err);
     return NextResponse.json({ error: "Internal error" }, { status: 500 });
   }
 }

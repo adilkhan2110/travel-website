@@ -11,6 +11,8 @@ export default function Header() {
     { name: "HOME", href: "/" },
     { name: "ABOUT US", href: "/about" },
     { name: "HOLIDAYS", href: "/tours" },
+    { name: "JAIPUR SITE SEENS", href: "/jaipur-seens" },
+    { name: "CAR RENTEL", href: "/car-rentel" },
     { name: "GALLERY", href: "/gallery" },
     { name: "VISA", href: "/visa" },
     { name: "CONTACT US", href: "/contact" },

@@ -195,7 +195,7 @@ export default function AddTourPackage() {
         />
       </Card>
 
-      <Modal open={open} onClose={handleClose}>
+      <Modal open={open} onClose={handleClose} className="modal-main">
         <div
           style={{
             display: "flex",
@@ -205,6 +205,7 @@ export default function AddTourPackage() {
             overflowY: "auto",
             padding: "20px",
           }}
+             className="modal-box"
         >
           <HolidayModal
             formData={formData}

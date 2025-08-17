@@ -94,7 +94,7 @@ const VisaView = () => {
   }, [selectedItem, reset]);
 
   const onSubmit = async (data) => {
-    debugger
+     
     try {
       const formDataToSend = new FormData();
       formDataToSend.append("title", data.title);

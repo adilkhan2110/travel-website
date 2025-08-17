@@ -192,13 +192,14 @@ export default function AddTourPackage() {
         />
       </Card>
 
-      <Modal open={open} onClose={handleClose}>
+      <Modal open={open} onClose={handleClose} className="modal-main">
         <div
-          style={{
+            style={{
             display: "flex",
             justifyContent: "center",
             marginTop: "10%",
           }}
+          className="modal-box"
         >
           <AddTourModal
             formData={formData}

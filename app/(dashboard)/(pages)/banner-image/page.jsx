@@ -1,16 +1,15 @@
- 
 "use client";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { Button, Card, Modal } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import Popover from "@mui/material/Popover";
 import { useEffect, useState } from "react";
-import AddEditModal from "../../../../components/gallary/addEditmodal";
+import BannerImage from "../../../../components/banner-image/BannerImage";
 import ReusableTable from "../../../../components/ReusableTable/ReusableTable";
-import useBannerStore from "../../../../store/useBannerImage"; 
+
+import useBannerStore from "../../../../store/useBannerStore";
 function RowActions({ row, onDelete, onEdit }) {
   const [anchorEl, setAnchorEl] = useState(null);
-   
 
   const handleClick = (event) => setAnchorEl(event.currentTarget);
   const handleClosePopover = () => setAnchorEl(null);
@@ -55,22 +54,7 @@ function RowActions({ row, onDelete, onEdit }) {
 }
 
 export default function BannerPage() {
-  // const {
-  //   items,
-  //   totalCount,
-  //   page,
-  //   rowsPerPage,
-  //   fetchItems,
-  //   setPage,
-  //   setRowsPerPage,
-  //   deleteItem,
-  //   addItem,
-  //   updateItem,
-  //   isFetchingItems,
-  //   isAddingItem,
-  // } = useBannerStores();  
-
-   const {
+  const {
     items,
     totalCount,
     page,
@@ -83,12 +67,12 @@ export default function BannerPage() {
     updateItem,
     isFetchingItems,
     isAddingItem,
-  } = useBannerStore()
+  } = useBannerStore();
 
   const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState({
-    heading: "",
-    description: "",
+    title: "",
+    category: "",
     _id: null,
     image: null,
   });
@@ -101,28 +85,28 @@ export default function BannerPage() {
   const columns = [
     {
       id: "image",
-      label: "Banner Image",
+      label: "Image",
       renderCell: (row) => (
         <img
           src={row?.image}
-          alt={row?.heading}
+          alt={row?.title}
           style={{ width: 50, borderRadius: 6 }}
         />
       ),
     },
-    { id: "heading", label: "Heading" },
-    { id: "description", label: "Description" },
+    { id: "title", label: "Title" },
+    { id: "category", label: "Category" },
     { id: "actions", label: "Actions", hasActions: true },
   ];
 
   const handleOpen = () => {
-    setFormData({ heading: "", description: "", image: null, _id: null });
+    setFormData({ title: "", category: "", image: null, _id: null });
     setSelectedItem(null);
     setOpen(true);
   };
 
   const handleClose = () => {
-    setFormData({ heading: "", description: "", image: null, _id: null });
+    setFormData({ title: "", category: "", image: null, _id: null });
     setSelectedItem(null);
     setOpen(false);
   };
@@ -138,8 +122,8 @@ export default function BannerPage() {
 
   const handleSubmit = async () => {
     const form = new FormData();
-    form.append("heading", formData.heading);
-    form.append("description", formData.description);
+    form.append("title", formData.title);
+    form.append("category", formData.category);
     if (formData.image) form.append("image", formData.image);
 
     if (selectedItem) {
@@ -181,8 +165,8 @@ export default function BannerPage() {
               onEdit={(row) => {
                 setSelectedItem(row);
                 setFormData({
-                  heading: row.heading || "",
-                  description: row.description || "",
+                  title: row.title || "",
+                  category: row.category || "",
                   image: row.image || "",
                   _id: row._id,
                 });
@@ -193,9 +177,16 @@ export default function BannerPage() {
         />
       </Card>
 
-      <Modal open={open} onClose={handleClose}>
-        <div style={{ display: "flex", justifyContent: "center", marginTop: "10%" }}>
-          <AddEditModal
+      <Modal open={open} onClose={handleClose} className="modal-main">
+        <div
+          className="modal-box"
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginTop: "10%",
+          }}
+        >
+          <BannerImage
             formData={formData}
             handleInputChange={handleInputChange}
             handleSubmit={handleSubmit}

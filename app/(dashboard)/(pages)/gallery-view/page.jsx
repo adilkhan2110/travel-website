@@ -185,13 +185,14 @@ export default function GalleryPage() {
         />
       </Card>
 
-      <Modal open={open} onClose={handleClose}>
+      <Modal open={open} onClose={handleClose} className="modal-main">
         <div
           style={{
             display: "flex",
             justifyContent: "center",
             marginTop: "10%",
           }}
+             className="modal-box"
         >
           <AddEditModal
             formData={formData}

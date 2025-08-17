@@ -82,7 +82,7 @@ export default function ToursPage() {
       <Footer />
       <WhatsAppWidget />
 
-      <Modal open={open} onClose={handleClose}>
+      <Modal open={open} onClose={handleClose}  className="modal-main">
         <div
           style={{
             display: "flex",

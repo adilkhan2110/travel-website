@@ -9,7 +9,7 @@ import { RHFSelect, RHFTextField } from "../../components/ui/hook-form";
 import RHFImageUpload from "../../components/ui/hook-form/rhf-image-upload";
 import LoadingButton from "../../components/ui/LoadingButton";
 
-import useGalleryStore from "@/store/useGalleryStore ";
+import useHolidayPackages from "../../store/useHolidayPackages";
 import { useEffect } from "react";
 
 // Validation schema
@@ -25,7 +25,7 @@ const schema = yup.object().shape({
 
 const AddEditModal = ({ formData, handleClose, isEdit }) => {
   const { addItem, updateItem, isAddingItem, isUpdatingItem } =
-    useGalleryStore();
+    useHolidayPackages();
 
   const methods = useForm({
     resolver: yupResolver(schema),
