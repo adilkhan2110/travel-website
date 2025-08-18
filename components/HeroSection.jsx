@@ -1,34 +1,35 @@
-"use client"
-import { useEffect, useState } from "react"
-import useBannerStore from "@/store/useBannerStore"
+"use client";
+import { useEffect, useState } from "react";
+import useBannerStore from "@/store/useBannerStore";
 
 export default function HeroSection() {
-  const { items, fetchItems, isFetchingItems } = useBannerStore()
-  const [currentSlide, setCurrentSlide] = useState(0)
+  const { items, fetchItems, isFetchingItems } = useBannerStore();
+  const [currentSlide, setCurrentSlide] = useState(0);
 
   // fetch banners on mount
   useEffect(() => {
-    fetchItems(0, 10, true) // 👈 all banners
-  }, [fetchItems])
+    fetchItems(0, 10, true); // 👈 all banners
+  }, [fetchItems]);
 
   // auto-slide
   useEffect(() => {
-    if (items.length === 0) return
+    if (items.length === 0) return;
     const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % items.length)
-    }, 5000)
-    return () => clearInterval(timer)
-  }, [items])
+      setCurrentSlide((prev) => (prev + 1) % items.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [items]);
 
-  const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % items.length)
-  const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + items.length) % items.length)
+  const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % items.length);
+  const prevSlide = () =>
+    setCurrentSlide((prev) => (prev - 1 + items.length) % items.length);
 
   if (isFetchingItems) {
     return (
       <section className="h-screen flex items-center justify-center bg-gray-900 text-white">
         Loading banners...
       </section>
-    )
+    );
   }
 
   if (items.length === 0) {
@@ -36,7 +37,7 @@ export default function HeroSection() {
       <section className="h-screen flex items-center justify-center bg-gray-900 text-white">
         No banners available
       </section>
-    )
+    );
   }
 
   return (
@@ -59,10 +60,11 @@ export default function HeroSection() {
             <div className="container mx-auto px-4">
               <div className="max-w-4xl">
                 <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-6 leading-tight">
-                  <span className="bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">
+                  <span className="bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent block max-w-[580px] break-words">
                     {slide.title}
                   </span>
                 </h1>
+
                 <p className="text-xl md:text-3xl text-white mb-10 opacity-90 font-light">
                   {slide.description}
                 </p>
@@ -110,5 +112,5 @@ export default function HeroSection() {
         ))}
       </div>
     </section>
-  )
+  );
 }

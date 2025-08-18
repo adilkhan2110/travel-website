@@ -10,22 +10,22 @@ import LoadingButton from "../ui/LoadingButton";
 import { useEffect } from "react";
 import useBannerStore from "@/store/useBannerStore";
 
-// Validation schema
+// ✅ Validation schema
 const schema = yup.object().shape({
   title: yup.string().required("Title is required"),
   description: yup.string().required("Description is required"),
-  image: yup.mixed().test("required", "Image is required", (value) => {
-    return value && value.length > 0;
-  }),
+  image: yup
+    .mixed()
+    .test("required", "Image is required", (value) => {
+      // Allow string (existing URL) or File[]
+      if (!value) return false;
+      if (typeof value === "string") return true;
+      if (Array.isArray(value) && value.length > 0) return true;
+      return false;
+    }),
 });
 
-const BannerImage = ({
-  formData,
-  handleClose,
-  handleSubmit,
-  isEdit,
-  isLoading,
-}) => {
+const BannerImage = ({ formData, handleClose, isEdit, isLoading }) => {
   const methods = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
@@ -36,19 +36,21 @@ const BannerImage = ({
   });
 
   const { handleSubmit: onFormSubmit, reset } = methods;
-  const { addItem, updateItem, isAddingItem, isUpdatingItem } =
-    useBannerStore();
+  const { addItem, updateItem } = useBannerStore();
 
-  // Populate form when editing
-  useEffect(() => {
-    if (isEdit && formData) {
-      reset({
-        title: formData?.title || "",
-        description: formData?.description || "",
-        image: formData?.image ? [formData.image] : [],
-      });
-    }
-  }, [isEdit, formData, reset]);
+  // ✅ Populate form when editing
+// ✅ Populate form when editing
+useEffect(() => {
+  if (isEdit && formData) {
+      
+    reset({
+      title: formData?.title || "",
+      description: formData?.description || "",
+      image: formData?.image ? [formData.image] : [], // always array
+    });
+  }
+}, [isEdit, formData, reset]);
+
 
   const onSubmit = async (data) => {
     try {
@@ -56,7 +58,8 @@ const BannerImage = ({
       formDataToSend.append("title", data.title);
       formDataToSend.append("description", data.description);
 
-      if (data.image[0] instanceof File) {
+      // ✅ Handle image correctly
+     if (Array.isArray(data.image) && data.image[0] instanceof File) {
         formDataToSend.append("image", data.image[0]);
       }
 
@@ -66,7 +69,7 @@ const BannerImage = ({
         await addItem(formDataToSend);
       }
 
-      handleClose(); // Close modal after submit
+      handleClose();
     } catch (error) {
       console.error("Form submission error:", error);
     }
@@ -93,7 +96,11 @@ const BannerImage = ({
             />
           </Box>
           <Box sx={{ mb: 2 }}>
-            <RHFImageUpload name="image" label="Banner Image" />
+            <RHFImageUpload
+              name="image"
+              label="Banner Image"
+              defaultImage={isEdit ? formData?.image : null} // ✅ pass existing image for preview
+            />
           </Box>
 
           <Box sx={{ display: "flex", justifyContent: "flex-end" }}>

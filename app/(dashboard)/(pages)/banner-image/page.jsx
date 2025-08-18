@@ -72,7 +72,7 @@ export default function BannerPage() {
   const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState({
     title: "",
-    category: "",
+    description: "",
     _id: null,
     image: null,
   });
@@ -100,13 +100,13 @@ export default function BannerPage() {
   ];
 
   const handleOpen = () => {
-    setFormData({ title: "", category: "", image: null, _id: null });
+    setFormData({ title: "", description: "", image: null, _id: null });
     setSelectedItem(null);
     setOpen(true);
   };
 
   const handleClose = () => {
-    setFormData({ title: "", category: "", image: null, _id: null });
+    setFormData({ title: "", description: "", image: null, _id: null });
     setSelectedItem(null);
     setOpen(false);
   };
@@ -123,7 +123,7 @@ export default function BannerPage() {
   const handleSubmit = async () => {
     const form = new FormData();
     form.append("title", formData.title);
-    form.append("category", formData.category);
+    form.append("descriptions", formData.description);
     if (formData.image) form.append("image", formData.image);
 
     if (selectedItem) {
@@ -166,7 +166,7 @@ export default function BannerPage() {
                 setSelectedItem(row);
                 setFormData({
                   title: row.title || "",
-                  category: row.category || "",
+                  description: row.description || "",
                   image: row.image || "",
                   _id: row._id,
                 });
