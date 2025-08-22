@@ -92,13 +92,7 @@ export default function VisaPage() {
               dangerouslySetInnerHTML={{ __html: selectedItem.description }}
             />
 
-            <Typography sx={{ mt: 2 }}>
-              <strong>Duration:</strong> {selectedItem.days} Days
-            </Typography>
-
-            <Typography sx={{ mt: 2 }}>
-              <strong>Validity:</strong> {selectedItem.validity} Months
-            </Typography>
+            
 
             {/* Requirements */}
             {selectedItem.requirements?.length > 0 && (

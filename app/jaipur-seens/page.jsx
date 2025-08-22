@@ -17,7 +17,8 @@ export default function VisaPage() {
   const router = useRouter();
 
   const handleOpen = (id) => {
-    router.push(`/jaipur-sightseeing/${id}`);
+    debugger
+    router.push(`/jaipur-seens/${id}`);
   };
 
   return (
@@ -62,7 +63,7 @@ export default function VisaPage() {
                 </h3>
 
                 <button
-                  onClick={handleOpen(tour._id)}
+                  onClick={()=>handleOpen(tour._id)}
                   className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 shadow-lg hover:shadow-emerald-500/25 transform hover:-translate-y-0.5"
                 >
                   View Details
