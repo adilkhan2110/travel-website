@@ -123,9 +123,7 @@ export default function VisaPage() {
             <h1 className="text-5xl md:text-7xl font-bold mb-6">
               Jaipur Sightseeing
             </h1>
-            {/* <p className="text-xl md:text-2xl opacity-90 mb-8">
-              Your Gateway to Global Travel
-            </p> */}
+            
             <div className="max-w-2xl mx-auto">
               <p className="text-lg opacity-80">
                 Get your visa processed quickly and hassle-free with Arisha
