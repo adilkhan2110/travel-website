@@ -33,9 +33,7 @@ export default function VisaPage() {
 
             <div className="max-w-2xl mx-auto">
               <p className="text-lg opacity-80">
-                Get your visa processed quickly and hassle-free with Arisha
-                Tours and Travels. We provide comprehensive visa services for
-                all major destinations worldwide.
+               Explore the Pink City like never before with Arisha Tours and Travels. From majestic forts and palaces to vibrant bazaars and cultural gems, we offer curated sightseeing experiences across Jaipur..
               </p>
             </div>
           </div>
