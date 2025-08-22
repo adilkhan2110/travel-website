@@ -17,7 +17,7 @@ export default function VisaPage() {
   const router = useRouter();
 
   const handleOpen = (id) => {
-    debugger
+   
     router.push(`/jaipur-seens/${id}`);
   };
 
