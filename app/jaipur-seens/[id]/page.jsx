@@ -15,11 +15,11 @@ import {
 } from "@mui/material";
 import { useParams } from "next/navigation";
 import { useEffect } from "react";
-import useVisaDetail from "../../../store/useVisaDetail";
+import useJaipurSightseeing from "../../../store/useJaipurSightseeing";
 
 export default function VisaPage() {
   const { id } = useParams();
-  const { selectedItem, isFetchingItemById, getItemById } = useVisaDetail();
+  const { selectedItem, isFetchingItemById, getItemById } = useJaipurSightseeing();
 
   useEffect(() => {
     if (id) {

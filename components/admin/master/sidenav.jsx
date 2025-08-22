@@ -45,6 +45,7 @@ function NavLinks({ onLinkClick }) {
     { href: "/gallery-view", label: "Gallery View" },
     { href: "/visa-update", label: "Visa Services" },
     { href: "/banner-image", label: "Banner image" },
+    { href: "/jaipur-sightseeing", label: "Jaipur Sightseeing" },
   ];
 
   const handleLogout = () => {
