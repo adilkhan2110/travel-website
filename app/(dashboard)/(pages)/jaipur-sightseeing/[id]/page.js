@@ -1,5 +1,7 @@
-import JaipurSightseeing from "@/components/Jaipur-Sightseeing/Jaipur-Sightseeing"
-
+ 
+const JaipurSightseeing = dynamic(() => import("@/components/Jaipur-Sightseeing/Jaipur-Sightseeing"), {
+  ssr: false, // disable server-side rendering
+});
  
 
 const Page = () => {
