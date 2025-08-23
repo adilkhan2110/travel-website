@@ -44,7 +44,7 @@ export default function CarModalView({
 }) {
   const methods = useForm({
     resolver: yupResolver(schema),
-    defaultValues: defaultValues || {
+    defaultValues: {
       name: "",
       type: "",
       adults: "",
@@ -58,21 +58,49 @@ export default function CarModalView({
 
   const { handleSubmit, reset } = methods;
 
-  // 🟢 Reset values when modal opens with defaultValues
+  // 🟢 Reset values on open/close
   React.useEffect(() => {
-    if (defaultValues) {
-      reset({
-        name: defaultValues.name || "",
-        type: defaultValues.type || "",
-        adults: defaultValues.adults || "",
-        driver: 1, // 🟢 always set to 1
-        fuel_type: defaultValues.fuel_type || "",
-        luggage_space: defaultValues.luggage_space || "",
-        price_per_km: defaultValues.price_per_km || "",
-        image: defaultValues.image ? [defaultValues.image] : [],
-      });
+    if (open) {
+      if (isEdit && defaultValues) {
+        reset({
+          name: defaultValues.name || "",
+          type: defaultValues.type || "",
+          adults: defaultValues.adults || "",
+          driver: 1, // 🟢 always set to 1
+          fuel_type: defaultValues.fuel_type || "",
+          luggage_space: defaultValues.luggage_space || "",
+          price_per_km: defaultValues.price_per_km || "",
+          image: defaultValues.image ? [defaultValues.image] : [],
+        });
+      } else {
+        reset({
+          name: "",
+          type: "",
+          adults: "",
+          driver: 1,
+          fuel_type: "",
+          luggage_space: "",
+          price_per_km: "",
+          image: [],
+        });
+      }
     }
-  }, [defaultValues, reset]);
+  }, [open, isEdit, defaultValues, reset]);
+
+  // 🟢 Modal close ke saath form bhi reset ho
+  const handleModalClose = () => {
+    reset({
+      name: "",
+      type: "",
+      adults: "",
+      driver: 1,
+      fuel_type: "",
+      luggage_space: "",
+      price_per_km: "",
+      image: [],
+    });
+    handleClose();
+  };
 
   const onSubmit = async (data) => {
     const formData = new FormData();
@@ -89,11 +117,11 @@ export default function CarModalView({
     });
 
     await onSubmitForm(formData);
-    handleClose();
+    handleModalClose();
   };
 
   return (
-    <Modal open={open} onClose={handleClose} className="modal-main">
+    <Modal open={open} onClose={handleModalClose} className="modal-main">
       <Box
         sx={{
           display: "flex",
@@ -102,7 +130,7 @@ export default function CarModalView({
         }}
       >
         {/* 🟢 Wider modal for 2-column layout */}
-        <Box className="modal-box p-6 bg-white rounded-lg shadow-lg w-[700px]">
+        <Box className="modal-box p-6 bg-white rounded-lg shadow-lg w-[700px] max-w-[90vw]">
           <h4 className="text-lg font-semibold mb-4">
             {isEdit ? "Update Car" : "Add New Car"}
           </h4>
@@ -112,18 +140,18 @@ export default function CarModalView({
               onSubmit={handleSubmit(onSubmit)}
               className="flex flex-col gap-3"
             >
-              <Grid container spacing={2} alignItems="stretch">
-                <Grid item xs={6} sx={{ display: "flex" }}>
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={6}>
                   <RHFTextField name="name" label="Car Name" fullWidth />
                 </Grid>
-                <Grid item xs={6} sx={{ display: "flex" }}>
+                <Grid item xs={12} sm={6}>
                   <RHFTextField
                     name="type"
                     label="Type (Sedan, SUV)"
                     fullWidth
                   />
                 </Grid>
-                <Grid item xs={6} sx={{ display: "flex" }}>
+                <Grid item xs={12} sm={6}>
                   <RHFTextField
                     name="adults"
                     type="number"
@@ -131,7 +159,7 @@ export default function CarModalView({
                     fullWidth
                   />
                 </Grid>
-                <Grid item xs={6} sx={{ display: "flex" }}>
+                <Grid item xs={12} sm={6}>
                   <RHFTextField
                     name="driver"
                     type="number"
@@ -140,17 +168,17 @@ export default function CarModalView({
                     disabled
                   />
                 </Grid>
-                <Grid item xs={6} sx={{ display: "flex" }}>
+                <Grid item xs={12} sm={6}>
                   <RHFTextField name="fuel_type" label="Fuel Type" fullWidth />
                 </Grid>
-                <Grid item xs={6} sx={{ display: "flex" }}>
+                <Grid item xs={12} sm={6}>
                   <RHFTextField
                     name="luggage_space"
                     label="Luggage Space"
                     fullWidth
                   />
                 </Grid>
-                <Grid item xs={6} sx={{ display: "flex" }}>
+                <Grid item xs={12} sm={6}>
                   <RHFTextField
                     name="price_per_km"
                     type="number"
@@ -158,14 +186,16 @@ export default function CarModalView({
                     fullWidth
                   />
                 </Grid>
-                <Grid item xs={12} sx={{ display: "flex" }}>
+                <Grid item xs={12}>
                   <RHFImageUpload name="image" label="Car Image" />
                 </Grid>
               </Grid>
 
               <div className="flex justify-end gap-2 mt-4">
-                <Button onClick={handleClose}>Cancel</Button>
-                <LoadingButton loading={isLoading}>
+                <Button onClick={handleModalClose} variant="outlined">
+                  Cancel
+                </Button>
+                <LoadingButton loading={isLoading} variant="contained">
                   {isEdit ? "Update" : "Add"}
                 </LoadingButton>
               </div>
