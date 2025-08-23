@@ -1,6 +1,11 @@
-import JaipurSightseeing from "../../../../../components/Jaipur-Sightseeing/Jaipur-Sightseeing";
+'"use client";';
+import dynamic from "next/dynamic";
 
- 
+const JaipurSightseeing = dynamic(
+  () =>
+    import("../../../../../components/Jaipur-Sightseeing/Jaipur-Sightseeing"),
+  { ssr: false }
+);
 
 const Page = () => {
   return (

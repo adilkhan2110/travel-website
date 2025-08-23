@@ -14,7 +14,7 @@ export default function GalleryPage() {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   useEffect(() => {
-    fetchItems("", "", true);  
+    fetchItems("", "", true);
   }, [fetchItems]);
 
   // Normalize and map backend data
@@ -52,11 +52,11 @@ export default function GalleryPage() {
 
   return (
     <main>
-   
-
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 py-24">
-        <div className="absolute inset-0 bg-black/20"></div>
+      <section className="relative bg-[url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=80')] bg-cover bg-center py-24">
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-r from-emerald-600/70 via-teal-600/70 to-cyan-600/70"></div>
+
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center text-white">
             <h1 className="text-5xl md:text-7xl font-bold mb-6">Gallery</h1>
