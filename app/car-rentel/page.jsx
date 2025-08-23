@@ -57,6 +57,19 @@ export default function VisaPage() {
         </Container>
       </Box>
 
+      <Container
+        sx={{ position: "relative", zIndex: 1, textAlign: "center", mt: 4 }}
+      >
+        <Typography variant="h4" fontWeight="bold" gutterBottom>
+          Car Rental Services in India – Arisha Tour & Travel
+        </Typography>
+        <Typography
+          variant="body1"
+          sx={{ maxWidth: "700px", mx: "auto", opacity: 0.8 }}
+        >
+         Arisha Tour & Travel offers reliable car rental with driver services for day trips, Rajasthan tours, India tours, corporate travel, weddings, and airport/railway transfers.
+        </Typography>
+      </Container>
       {/* Cars List */}
       <Box sx={{ py: 10, bgcolor: "grey.50" }}>
         <Container>
