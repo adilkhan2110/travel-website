@@ -207,8 +207,8 @@ export default function Footer() {
 
         <div className="border-t border-gray-700 mt-12 pt-8 text-center text-gray-400">
           <p>
-            &copy; 2024 Arisha Tours and Travels. All rights reserved. |
-            Designed with ❤️ for travelers
+            &copy; 2025 Arisha Tours and Travels. All rights reserved. 
+           
           </p>
         </div>
       </div>

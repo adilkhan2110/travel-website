@@ -68,7 +68,7 @@ export default function VisaPage() {
                 </button>
               </div>
             </div>
-          ))}
+          ))} 
         </div>
 
         {/* Only show if more than 6 tours */}
