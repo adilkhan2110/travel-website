@@ -59,8 +59,8 @@ export default function HeroSection() {
           <div className="absolute inset-0 z-20 flex items-center">
             <div className="container mx-auto px-4">
               <div className="max-w-4xl">
-                <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-6 leading-tight">
-                  <span className="bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent block max-w-[580px] break-words">
+                <h1 className="text-3xl md:text-7xl lg:text-6xl font-bold text-white mb-6 leading-tight">
+                  <span className="bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent block max-w-[640px] break-words">
                     {slide.title}
                   </span>
                 </h1>

@@ -46,6 +46,7 @@ function NavLinks({ onLinkClick }) {
     { href: "/visa-update", label: "Visa Services" },
     { href: "/banner-image", label: "Banner image" },
     { href: "/jaipur-sightseeing", label: "Jaipur Sightseeing" },
+    { href: "/cars", label: "Car rentel" },
   ];
 
   const handleLogout = () => {
