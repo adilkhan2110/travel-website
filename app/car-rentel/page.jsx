@@ -1,13 +1,21 @@
 "use client";
 import Footer from "@/components/Footer";
 import WhatsAppWidget from "@/components/WhatsAppWidget";
-import { Card, CardContent, CardMedia, Grid, Typography } from "@mui/material";
+import {
+  Box,
+  Container,
+  Grid,
+  Typography,
+  Card,
+  CardContent,
+  CardMedia,
+} from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import useCars from "../../store/useCars";
 
 export default function VisaPage() {
-  const { items, fetchItems, isFetchingItems } = useCars();
+  const { items, fetchItems } = useCars();
 
   useEffect(() => {
     fetchItems("", "", true);
@@ -18,69 +26,103 @@ export default function VisaPage() {
   return (
     <main>
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 py-24">
-        <div className="absolute inset-0 bg-black/20"></div>
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="text-center text-white">
-            <h1 className="text-5xl md:text-7xl font-bold mb-6">
-              Car Rental Services
-            </h1>
-            <div className="max-w-2xl mx-auto">
-              <p className="text-lg opacity-80">
-                Choose from a wide range of vehicles at affordable prices. All
-                cars come with professional drivers and full comfort.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
+      <Box
+        sx={{
+          position: "relative",
+          bgcolor: "transparent",
+          background: "linear-gradient(to right, #2563eb, #9333ea, #ec4899)",
+          py: { xs: 12, md: 16 },
+          color: "white",
+          textAlign: "center",
+        }}
+      >
+        <Box
+          sx={{
+            position: "absolute",
+            inset: 0,
+            bgcolor: "rgba(0,0,0,0.2)",
+          }}
+        />
+        <Container sx={{ position: "relative", zIndex: 1 }}>
+          <Typography variant="h2" fontWeight="bold" gutterBottom>
+            Car Rental Services
+          </Typography>
+          <Typography
+            variant="body1"
+            sx={{ maxWidth: "700px", mx: "auto", opacity: 0.8 }}
+          >
+            Choose from a wide range of vehicles at affordable prices. All cars
+            come with professional drivers and full comfort.
+          </Typography>
+        </Container>
+      </Box>
 
       {/* Cars List */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="container mx-auto px-4">
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 my-8">
-              {items?.map((car) => (
-                <div
-                  key={car._id}
-                  className="group bg-white rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2"
+      <Box sx={{ py: 10, bgcolor: "grey.50" }}>
+        <Container>
+          <Grid container spacing={4}>
+            {items?.map((car) => (
+              <Grid item key={car._id} xs={12} md={6} lg={4}>
+                <Card
+                  sx={{
+                    borderRadius: "24px",
+                    boxShadow: 4,
+                    transition: "all 0.4s ease",
+                    "&:hover": {
+                      transform: "translateY(-8px)",
+                      boxShadow: 8,
+                    },
+                  }}
                 >
                   {/* Car Image */}
-                  <div className="relative overflow-hidden">
-                    <img
-                      src={car.image || "/car-placeholder.jpg"}
-                      alt={car.name}
-                      className="w-full h-56 object-cover group-hover:scale-110 transition-transform duration-700"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  </div>
+                  <CardMedia
+                    component="img"
+                    height="200"
+                    image={car.image || "/car-placeholder.jpg"}
+                    alt={car.name}
+                    sx={{
+                      transition: "transform 0.7s",
+                      "&:hover": { transform: "scale(1.1)" },
+                    }}
+                  />
 
                   {/* Car Details */}
-                  <div className="p-8">
-                    <h3 className="font-bold text-xl text-gray-800 mb-3 group-hover:text-emerald-600 transition-colors">
+                  <CardContent>
+                    <Typography
+                      variant="h6"
+                      fontWeight="bold"
+                      sx={{
+                        color: "grey.800",
+                        transition: "color 0.3s",
+                        "&:hover": { color: "success.main" },
+                      }}
+                      gutterBottom
+                    >
                       {car.name}
-                    </h3>
-                    <p className="text-gray-600 mb-2">
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
                       {car.type} • {car.fuel_type}
-                    </p>
-                    <p className="text-gray-600 mb-1">
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
                       👥 {car.capacity?.adults} Adults | 🧳 {car.luggage_space}
-                    </p>
-                    <p className="text-gray-600 mb-1">
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
                       🚗 Driver: {car.capacity?.driver}
-                    </p>
-                    <p className="text-emerald-600 font-bold mt-3">
+                    </Typography>
+                    <Typography
+                      variant="body1"
+                      fontWeight="bold"
+                      sx={{ color: "success.main", mt: 1 }}
+                    >
                       ₹{car.price_per_km} / KM
-                    </p>
-
-                 
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        </Container>
+      </Box>
 
       <Footer />
       <WhatsAppWidget />
